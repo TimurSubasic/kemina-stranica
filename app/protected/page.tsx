@@ -7,10 +7,27 @@ import { FetchDataSteps } from "@/components/tutorial/fetch-data-steps";
 export default async function ProtectedPage() {
   const supabase = await createClient();
 
-  const { data, error } = await supabase.auth.getClaims();
-  if (error || !data?.claims) {
+  const { data: claims, error } = await supabase.auth.getClaims();
+  if (error || !claims?.claims) {
     redirect("/auth/login");
   }
+
+  async function fetchUsers(userId: string) {
+    const { data, error } = await supabase
+      .from("users")
+      .select("*")
+      .eq("id", userId)
+      .single();
+    if (error) {
+      console.log("Error fetching user data:", error.message);
+      return null;
+    } else {
+      console.log("User data:", data);
+      return data;
+    }
+  }
+
+  fetchUsers(claims?.claims.sub);
 
   return (
     <div className="flex-1 w-full flex flex-col gap-12">
@@ -24,8 +41,13 @@ export default async function ProtectedPage() {
       <div className="flex flex-col gap-2 items-start">
         <h2 className="font-bold text-2xl mb-4">Your user details</h2>
         <pre className="text-xs font-mono p-3 rounded border max-h-32 overflow-auto">
-          {JSON.stringify(data.claims, null, 2)}
+          {JSON.stringify(claims.claims, null, 2)}
         </pre>
+      </div>
+
+      <div>
+        <h2 className="font-bold text-2xl mb-4">Your user data</h2>
+        <pre className="text-xs font-mono p-3 rounded border max-h-32 overflow-auto"></pre>
       </div>
       <div>
         <h2 className="font-bold text-2xl mb-4">Next steps</h2>
