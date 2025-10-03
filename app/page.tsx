@@ -1,12 +1,5 @@
-import { DeployButton } from "@/components/deploy-button";
-import { EnvVarWarning } from "@/components/env-var-warning";
-import { AuthButton } from "@/components/auth-button";
-import { ThemeSwitcher } from "@/components/theme-switcher";
-import { hasEnvVars } from "@/lib/utils";
-import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import NotAuthenticated from "@/components/not-authenticated";
-import { Divide } from "lucide-react";
 import Navbar from "@/components/navbar";
 
 export default async function Home() {
@@ -15,7 +8,12 @@ export default async function Home() {
   const { data: claims, error: claimsError } = await supabase.auth.getClaims();
 
   if (claimsError || !claims?.claims) {
-    return <NotAuthenticated />;
+    return (
+      <div className="min-h-screen flex flex-col items-center gap-10">
+        <Navbar />
+        <NotAuthenticated />
+      </div>
+    );
   }
 
   const { data: userData, error: userError } = await supabase
@@ -26,8 +24,6 @@ export default async function Home() {
   if (userError) {
     console.log("Error fetching user data:", userError.message);
     return null;
-  } else {
-    console.log("User data:", userData);
   }
 
   return (

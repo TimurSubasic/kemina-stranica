@@ -22,7 +22,6 @@ export default async function ProtectedPage() {
       console.log("Error fetching user data:", error.message);
       return null;
     } else {
-      console.log("User data:", data);
       return data;
     }
   }
