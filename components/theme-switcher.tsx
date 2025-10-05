@@ -25,12 +25,12 @@ const ThemeSwitcher = () => {
     return null;
   }
 
-  const ICON_SIZE = 24;
+  const ICON_SIZE = 20;
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size={"icon"}>
+        <Button variant="outline">
           {theme === "light" ? (
             <Sun
               key="light"
@@ -38,7 +38,6 @@ const ThemeSwitcher = () => {
                 height: ICON_SIZE,
                 width: ICON_SIZE,
               }}
-              className={"text-muted-foreground"}
             />
           ) : theme === "dark" ? (
             <Moon
@@ -47,7 +46,6 @@ const ThemeSwitcher = () => {
                 height: ICON_SIZE,
                 width: ICON_SIZE,
               }}
-              className={"text-muted-foreground"}
             />
           ) : (
             <Laptop
@@ -56,9 +54,9 @@ const ThemeSwitcher = () => {
                 height: ICON_SIZE,
                 width: ICON_SIZE,
               }}
-              className={"text-muted-foreground"}
             />
           )}
+          <span>{theme?.charAt(0).toUpperCase() + theme!.slice(1)}</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-content" align="start">
@@ -67,16 +65,13 @@ const ThemeSwitcher = () => {
           onValueChange={(e) => setTheme(e)}
         >
           <DropdownMenuRadioItem className="flex gap-2" value="light">
-            <Sun size={ICON_SIZE} className="text-muted-foreground" />{" "}
-            <span>Light</span>
+            <Sun size={ICON_SIZE} /> <span>Light</span>
           </DropdownMenuRadioItem>
           <DropdownMenuRadioItem className="flex gap-2" value="dark">
-            <Moon size={ICON_SIZE} className="text-muted-foreground" />{" "}
-            <span>Dark</span>
+            <Moon size={ICON_SIZE} /> <span>Dark</span>
           </DropdownMenuRadioItem>
           <DropdownMenuRadioItem className="flex gap-2" value="system">
-            <Laptop size={ICON_SIZE} className="text-muted-foreground" />{" "}
-            <span>System</span>
+            <Laptop size={ICON_SIZE} /> <span>System</span>
           </DropdownMenuRadioItem>
         </DropdownMenuRadioGroup>
       </DropdownMenuContent>

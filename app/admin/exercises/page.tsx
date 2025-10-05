@@ -1,3 +1,4 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import {
   InputGroup,
@@ -8,14 +9,41 @@ import {
 import { Spinner } from "@/components/ui/spinner";
 import { Label } from "@radix-ui/react-dropdown-menu";
 import { FolderPen, Info, Video } from "lucide-react";
-import React from "react";
+import React, { useState } from "react";
 
-export default async function Exercises() {
+export default function Exercises() {
+  const [name, setName] = useState("");
+  const [video, setVideo] = useState<File | null>(null);
+  const [description, setDescription] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleCreate = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    console.log("Creating exercise...");
+    console.log({ name, video, description });
+  };
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center absolute top-0 left-0 w-full h-full">
+        <Spinner className="size-10" />
+      </div>
+    );
+  }
+
   return (
-    <div className="grid gap-4 w-full max-w-3xl mx-auto p-5">
+    <form
+      onSubmit={handleCreate}
+      className="grid gap-4 w-full max-w-3xl mx-auto p-5"
+    >
       <Label>Exercise Name</Label>
       <InputGroup>
-        <InputGroupInput placeholder="Name" />
+        <InputGroupInput
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder="Name"
+        />
         <InputGroupAddon>
           <FolderPen />
         </InputGroupAddon>
@@ -23,7 +51,14 @@ export default async function Exercises() {
 
       <Label>Exercise Video</Label>
       <InputGroup>
-        <InputGroupInput type="file" accept="video/*" />
+        <InputGroupInput
+          onChange={(e) => {
+            if (!e.target.files?.length) return;
+            setVideo(e.target.files[0]); // store file in state
+          }}
+          type="file"
+          accept="video/*"
+        />
         <InputGroupAddon>
           <Video />
         </InputGroupAddon>
@@ -32,6 +67,8 @@ export default async function Exercises() {
       <Label>Exercise Description</Label>
       <InputGroup>
         <InputGroupTextarea
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
           placeholder="Description about how the exercise should be done"
           className="min-h-[100px] "
         />
@@ -40,7 +77,7 @@ export default async function Exercises() {
         </InputGroupAddon>
       </InputGroup>
 
-      <Button>Create</Button>
-    </div>
+      <Button type="submit">Create</Button>
+    </form>
   );
 }

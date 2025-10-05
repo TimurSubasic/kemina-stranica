@@ -1,4 +1,6 @@
+import { AdminSidebar } from "@/components/admin-sidebar";
 import Navbar from "@/components/navbar";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import React from "react";
 
 export default function AdminLayout({
@@ -7,9 +9,12 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div>
-      <Navbar />
-      <div className="max-w-6xl mx-auto my-5">{children}</div>
-    </div>
+    <SidebarProvider defaultOpen={false}>
+      <AdminSidebar />
+      <main className="max-w-6xl mx-auto mt-5 flex-1">
+        <Navbar />
+        {children}
+      </main>
+    </SidebarProvider>
   );
 }

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Button } from "./ui/button";
 import { createClient } from "@/lib/supabase/server";
-import { LogoutButton } from "./logout-button";
+import { SidebarTrigger } from "./ui/sidebar";
 
 export async function AuthButton() {
   const supabase = await createClient();
@@ -10,7 +10,7 @@ export async function AuthButton() {
 
   return data ? (
     <div className="flex items-center">
-      <LogoutButton />
+      <SidebarTrigger />
     </div>
   ) : (
     <div className="flex gap-2">

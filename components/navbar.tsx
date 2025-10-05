@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import { AuthButton } from "./auth-button";
-import { ThemeSwitcher } from "./theme-switcher";
+import { SidebarTrigger } from "./ui/sidebar";
 
 export default function Navbar() {
   return (
@@ -13,7 +13,6 @@ export default function Navbar() {
         </div>
         <div className="flex gap-5 items-center font-semibold">
           <AuthButton />
-          <ThemeSwitcher />
         </div>
       </div>
     </nav>
