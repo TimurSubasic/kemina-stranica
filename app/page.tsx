@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import NotAuthenticated from "@/components/not-authenticated";
 import Navbar from "@/components/navbar";
+import { Spinner } from "@/components/ui/spinner";
 
 export default async function Home() {
   const supabase = await createClient();
@@ -11,6 +12,7 @@ export default async function Home() {
     return (
       <div className="min-h-screen flex flex-col items-center gap-10">
         <Navbar />
+        {/* !! Landing */}
         <NotAuthenticated />
       </div>
     );
@@ -37,7 +39,7 @@ export default async function Home() {
           </div>
         ) : (
           <div>
-            <p>Loading...</p>
+            <Spinner />
           </div>
         )}
       </div>
