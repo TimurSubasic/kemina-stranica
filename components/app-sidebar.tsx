@@ -4,6 +4,7 @@ import {
   ShieldUser,
   Users,
   User,
+  SquarePen,
   UserCog,
   LayoutDashboard,
 } from "lucide-react";
@@ -22,7 +23,6 @@ import {
 import { ThemeSwitcher } from "./theme-switcher";
 import { LogoutButton } from "./logout-button";
 import { createClient } from "@/lib/supabase/server";
-import Link from "next/link";
 
 // Menu items.
 const adminItems = [
@@ -40,6 +40,11 @@ const adminItems = [
     title: "Exercises",
     url: "/admin/exercises",
     icon: Dumbbell,
+  },
+  {
+    title: "Create Exercise",
+    url: "/admin/exercises/create",
+    icon: SquarePen,
   },
   {
     title: "User Management",
