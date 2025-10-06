@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import "./globals.css";
-import Navbar from "@/components/navbar";
-import { createClient } from "@/lib/supabase/server";
-import { redirect } from "next/navigation";
+import { SidebarProvider } from "@/components/ui/sidebar";
+import { AppSidebar } from "@/components/app-sidebar";
+import { Toaster } from "sonner";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -27,28 +27,6 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const supabase = await createClient();
-
-  const { data: claims, error: claimsError } = await supabase.auth.getClaims();
-
-  if (claimsError || !claims?.claims) {
-    return redirect("/");
-  }
-
-  const { data: userData, error: userError } = await supabase
-    .from("users")
-    .select("*")
-    .eq("id", claims?.claims.sub)
-    .single();
-  if (userError) {
-    console.log("Error fetching user data:", userError.message);
-    return null;
-  }
-
-  if (!userData || userData.role !== "admin") {
-    return redirect("/");
-  }
-
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.className} antialiased`}>
@@ -58,7 +36,12 @@ export default async function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <SidebarProvider defaultOpen={false}>
+            <AppSidebar />
+
+            <main className="flex-1">{children}</main>
+            <Toaster />
+          </SidebarProvider>
         </ThemeProvider>
       </body>
     </html>
