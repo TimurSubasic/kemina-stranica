@@ -2,7 +2,11 @@ import ExerciseDetails from "@/components/exercise-details";
 import { createClient } from "@/lib/supabase/server";
 import React from "react";
 
-export default async function Exercise({ params }: { params: { id: string } }) {
+export default async function Exercise({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
   const supabase = await createClient();
   const { id } = await params;
   const { data: exercise, error } = await supabase
