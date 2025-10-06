@@ -31,9 +31,9 @@ export default function CreateExercise() {
 
     if (res.success) {
       toast.success("Exercise created successfully");
-      e.currentTarget.reset();
     }
     setIsLoading(false);
+    e.currentTarget.reset();
   };
 
   return (

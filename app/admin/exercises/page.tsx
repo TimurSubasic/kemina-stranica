@@ -1,3 +1,4 @@
+import ExerciseItem from "@/components/exercise-item";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { createClient } from "@/lib/supabase/server";
@@ -28,21 +29,7 @@ export default async function Exercises() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {exercises.map((exercise) => (
-            <div
-              key={exercise.id}
-              className="border rounded-lg p-4 shadow hover:shadow-lg transition"
-            >
-              <h2 className="text-xl font-semibold mb-2">{exercise.name}</h2>
-              <p className="text-gray-600 mb-4">{exercise.description}</p>
-              {exercise.video_url && (
-                <video
-                  src={exercise.video_url}
-                  controls
-                  loop
-                  className="w-full h-auto rounded"
-                />
-              )}
-            </div>
+            <ExerciseItem key={exercise.id} exercise={exercise} />
           ))}
         </div>
       </div>
