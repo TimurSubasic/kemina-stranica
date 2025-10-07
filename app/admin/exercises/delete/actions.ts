@@ -33,9 +33,11 @@ export async function deleteExercises(exercises: SelectedExercise[]) {
 
     // Delete video from storage
     if (exercise.video_url) {
+      const path = "public/" + exercise.video_url.split("/").pop();
+
       const { error: storageError } = await supabase.storage
-        .from("videos") // Replace with your bucket
-        .remove([exercise.video_url]);
+        .from("videos")
+        .remove([path]);
 
       if (storageError) {
         console.error("Error deleting video from storage:", storageError);
