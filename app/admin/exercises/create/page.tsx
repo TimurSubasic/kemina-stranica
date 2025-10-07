@@ -10,7 +10,7 @@ import {
   InputGroupTextarea,
 } from "@/components/ui/input-group";
 import { Label } from "@radix-ui/react-dropdown-menu";
-import { FolderPen, Info, Video } from "lucide-react";
+import { ArrowBigLeftDash, FolderPen, Info, Video } from "lucide-react";
 import { createExercise } from "./actions";
 import { toast } from "sonner";
 
@@ -51,50 +51,56 @@ export default function CreateExercise() {
   };
 
   return (
-    <form
-      onSubmit={handleCreate}
-      className="grid gap-4 w-full max-w-3xl mx-auto p-5"
-    >
-      <Label>Exercise Name</Label>
-      <InputGroup>
-        <InputGroupInput name="name" placeholder="Name" required />
-        <InputGroupAddon>
-          <FolderPen />
-        </InputGroupAddon>
-      </InputGroup>
+    <div className="p-5 w-full">
+      <a href="/admin/exercises">
+        <Button variant="outline" className="text-primary">
+          <ArrowBigLeftDash className="size-7" />
+          Exercises
+        </Button>
+      </a>
 
-      <div className="flex items-center justify-between">
-        <Label>Exercise Video</Label>
-        <Label className="text-muted-foreground text-sm font-semibold">
-          Max 50MB
-        </Label>
-      </div>
+      <form className="grid gap-4  max-w-3xl mx-auto" onSubmit={handleCreate}>
+        <Label>Exercise Name</Label>
+        <InputGroup>
+          <InputGroupInput name="name" placeholder="Name" required />
+          <InputGroupAddon>
+            <FolderPen />
+          </InputGroupAddon>
+        </InputGroup>
 
-      <InputGroup>
-        <InputGroupInput type="file" name="video" accept="video/*" required />
-        <InputGroupAddon>
-          <Video />
-        </InputGroupAddon>
-      </InputGroup>
+        <div className="flex items-center justify-between">
+          <Label>Exercise Video</Label>
+          <Label className="text-muted-foreground text-sm font-semibold">
+            Max 50MB
+          </Label>
+        </div>
 
-      <Label>Exercise Description</Label>
-      <InputGroup>
-        <InputGroupTextarea
-          name="description"
-          placeholder="Description about how the exercise should be done"
-          className="min-h-[100px]"
-          required
-        />
-        <InputGroupAddon align="inline-start">
-          <Info />
-        </InputGroupAddon>
-      </InputGroup>
+        <InputGroup>
+          <InputGroupInput type="file" name="video" accept="video/*" required />
+          <InputGroupAddon>
+            <Video />
+          </InputGroupAddon>
+        </InputGroup>
 
-      {error && <p className="text-red-500">{error}</p>}
+        <Label>Exercise Description</Label>
+        <InputGroup>
+          <InputGroupTextarea
+            name="description"
+            placeholder="Description about how the exercise should be done"
+            className="min-h-[100px]"
+            required
+          />
+          <InputGroupAddon align="inline-start">
+            <Info />
+          </InputGroupAddon>
+        </InputGroup>
 
-      <Button type="submit" disabled={isLoading}>
-        {isLoading ? <Spinner className="size-4" /> : "Create"}
-      </Button>
-    </form>
+        {error && <p className="text-red-500">{error}</p>}
+
+        <Button size="lg" type="submit" disabled={isLoading}>
+          {isLoading ? <Spinner className="size-4" /> : "Create"}
+        </Button>
+      </form>
+    </div>
   );
 }

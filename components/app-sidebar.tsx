@@ -7,6 +7,7 @@ import {
   SquarePen,
   UserCog,
   LayoutDashboard,
+  Trash2,
 } from "lucide-react";
 
 import {
@@ -45,6 +46,11 @@ const adminItems = [
     title: "Create Exercise",
     url: "/admin/exercises/create",
     icon: SquarePen,
+  },
+  {
+    title: "Delete Exercise",
+    url: "/admin/exercises/delete",
+    icon: Trash2,
   },
   {
     title: "User Management",

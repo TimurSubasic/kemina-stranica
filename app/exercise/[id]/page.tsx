@@ -1,4 +1,4 @@
-import ExerciseDetails from "@/components/exercise-details";
+import ExerciseDetails from "./exercise-details";
 import { createClient } from "@/lib/supabase/server";
 import React from "react";
 
