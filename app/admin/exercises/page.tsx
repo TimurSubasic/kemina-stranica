@@ -19,12 +19,18 @@ export default async function Exercises() {
     );
   else
     return (
-      <div className="p-5 mt-10">
-        <div className="flex items-center justify-between mb-5">
+      <div className="p-5 mt-5">
+        <div className="flex flex-col gap-5 items-center justify-between mb-5 sm:flex-row">
           <h1 className="text-2xl font-bold">Exercises</h1>
-          <a href="/admin/exercises/create">
-            <Button>Create Exercise</Button>
-          </a>
+
+          <div className="flex items-center justify-around w-full sm:w-auto gap-4">
+            <a href="/admin/exercises/delete">
+              <Button variant="destructive">Delete Exercise</Button>
+            </a>
+            <a href="/admin/exercises/create">
+              <Button>Create Exercise</Button>
+            </a>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

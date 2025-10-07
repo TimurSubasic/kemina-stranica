@@ -23,17 +23,31 @@ export default function CreateExercise() {
     setIsLoading(true);
     setError(null);
 
-    const formData = new FormData(e.currentTarget);
+    const form = e.currentTarget;
+
+    const formData = new FormData(form);
+
+    const fileInput = formData.get("video") as File | null;
+    if (fileInput && fileInput.size > 50 * 1024 * 1024) {
+      setError("File size should be less than 50MB");
+      setIsLoading(false);
+      return;
+    }
+
+    toast.loading("Creating exercise...");
 
     const res = await createExercise(formData);
+
+    toast.dismiss();
 
     if (res.error) setError(res.error);
 
     if (res.success) {
       toast.success("Exercise created successfully");
+      //reset form data
+      form.reset();
     }
     setIsLoading(false);
-    e.currentTarget.reset();
   };
 
   return (
@@ -49,7 +63,13 @@ export default function CreateExercise() {
         </InputGroupAddon>
       </InputGroup>
 
-      <Label>Exercise Video</Label>
+      <div className="flex items-center justify-between">
+        <Label>Exercise Video</Label>
+        <Label className="text-muted-foreground text-sm font-semibold">
+          Max 50MB
+        </Label>
+      </div>
+
       <InputGroup>
         <InputGroupInput type="file" name="video" accept="video/*" required />
         <InputGroupAddon>

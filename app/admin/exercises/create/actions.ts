@@ -16,7 +16,9 @@ export async function createExercise(formData: FormData) {
     .from("videos")
     .upload(`public/${name}`, video);
 
-  if (uploadError) return { error: uploadError.message };
+  if (uploadError) {
+    return { error: uploadError.message };
+  }
 
   const video_url = `${
     supabase.storage.from("videos").getPublicUrl(uploadData.path).data.publicUrl
@@ -28,7 +30,9 @@ export async function createExercise(formData: FormData) {
     video_url,
   });
 
-  if (insertError) return { error: insertError.message };
+  if (insertError) {
+    return { error: insertError.message };
+  }
 
   revalidatePath("/admin/exercises");
   return { success: true };
