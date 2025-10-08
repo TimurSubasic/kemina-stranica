@@ -22,13 +22,13 @@ export default async function ProgramPage({
     return <div className="w-full mt-10 text-center">No user Found</div>;
   }
 
-  if (user && user.role === "active") {
-    return <div>Has plan</div>;
-  }
+  // if (user && user.role === "active") {
+  //   return <div>Has plan</div>;
+  // }
 
   const { data: program, error: programError } = await supabase
     .from("user-programs")
-    .select("*")
+    .select()
     .eq("user_id", userId)
     .eq("status", "active")
     .single();
@@ -46,5 +46,21 @@ export default async function ProgramPage({
     );
   }
 
-  return <div>Has program</div>;
+  const { data: exercises, error: exercisesError } = await supabase
+    .from("program-exercises")
+    .select()
+    .eq("program_id", program.id)
+    .order("week", { ascending: true })
+    .order("day", { ascending: true });
+
+  if (!exercises || exercisesError) {
+    console.log(exercisesError);
+    return <div>Error fetching Exercises</div>;
+  }
+
+  if (exercises.length === 0) {
+    return <div>Has Program, no exercises added</div>;
+  }
+
+  return <div>Has program has exercises</div>;
 }
