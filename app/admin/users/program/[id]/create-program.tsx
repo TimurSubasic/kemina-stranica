@@ -37,9 +37,7 @@ export default function CreateProgram() {
         <form onSubmit={handleSubmit}>
           <FieldSet>
             <FieldLegend>Program Configuration</FieldLegend>
-            <FieldDescription>
-              Set up your program with a name and duration
-            </FieldDescription>
+            <FieldDescription>Set up your program</FieldDescription>
             <FieldGroup>
               <Field>
                 <FieldLabel htmlFor="program-name">Program Name</FieldLabel>
@@ -71,7 +69,7 @@ export default function CreateProgram() {
                   </SelectContent>
                 </Select>
                 <FieldDescription>
-                  Select the number of days per week (1-7)
+                  Select the number of days per week
                 </FieldDescription>
               </Field>
             </FieldGroup>

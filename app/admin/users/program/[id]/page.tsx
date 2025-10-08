@@ -37,11 +37,14 @@ export default async function ProgramPage({
     console.log(programError);
   }
 
-  if (program && program.status)
+  if (!program) {
     return (
       <div>
         {" "}
         <CreateProgram />{" "}
       </div>
     );
+  }
+
+  return <div>Has program</div>;
 }
