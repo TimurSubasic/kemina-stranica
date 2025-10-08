@@ -33,6 +33,10 @@ export default async function ProgramPage({
     .eq("status", "active")
     .single();
 
+  if (programError) {
+    console.log(programError);
+  }
+
   if (program && program.status)
     return (
       <div>
