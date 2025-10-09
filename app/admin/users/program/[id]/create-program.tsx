@@ -2,7 +2,7 @@
 
 import type React from "react";
 
-import { useState } from "react";
+import { startTransition, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Field,
@@ -20,33 +20,67 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { createProgram } from "./actions";
+import { toast } from "sonner";
+import { Spinner } from "@/components/ui/spinner";
+import { useRouter } from "next/navigation";
 
-export default function CreateProgram() {
-  const [programName, setProgramName] = useState("");
-  const [days, setDays] = useState("");
+export default function CreateProgram({ userId }: { userId: string }) {
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleCreate = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("[v0] Form submitted:", { programName, days });
-    // Handle form submission here
+    setIsLoading(true);
+    setError(null);
+
+    const form = e.currentTarget;
+
+    const formData = new FormData(form);
+
+    const fileInput = formData.get("video") as File | null;
+    if (fileInput && fileInput.size > 50 * 1024 * 1024) {
+      setError("File size should be less than 50MB");
+      setIsLoading(false);
+      return;
+    }
+
+    toast.loading("Creating program...");
+
+    const data = { props: { formData, userId } };
+
+    const res = await createProgram(data);
+
+    toast.dismiss();
+
+    if (res.error) setError(res.error);
+
+    if (res.success) {
+      toast.success("Program created successfully");
+      //reset form data
+      form.reset();
+      startTransition(() => {
+        router.refresh();
+      });
+    }
+    setIsLoading(false);
   };
 
   return (
-    <div className="mt-5 flex items-center justify-center bg-background p-4">
+    <div className=" flex items-center justify-center bg-background p-4">
       <div className="w-full max-w-md">
-        <form onSubmit={handleSubmit}>
-          <FieldSet>
+        <form onSubmit={handleCreate}>
+          <FieldSet className="my-5">
             <FieldLegend>Program Configuration</FieldLegend>
             <FieldDescription>Set up your program</FieldDescription>
             <FieldGroup>
               <Field>
                 <FieldLabel htmlFor="program-name">Program Name</FieldLabel>
                 <Input
-                  id="program-name"
-                  type="text"
+                  id="name"
+                  name="name"
                   placeholder="Enter program name"
-                  value={programName}
-                  onChange={(e) => setProgramName(e.target.value)}
                   required
                 />
                 <FieldDescription>
@@ -56,8 +90,8 @@ export default function CreateProgram() {
 
               <Field>
                 <FieldLabel htmlFor="days">Days per Week</FieldLabel>
-                <Select value={days} onValueChange={setDays} required>
-                  <SelectTrigger id="days">
+                <Select name="days" required>
+                  <SelectTrigger id="days" name="days">
                     <SelectValue placeholder="Select days" />
                   </SelectTrigger>
                   <SelectContent>
@@ -75,21 +109,16 @@ export default function CreateProgram() {
             </FieldGroup>
           </FieldSet>
 
-          <div className="mt-6 flex gap-3">
-            <Button type="submit" className="flex-1">
-              Create Program
-            </Button>
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => {
-                setProgramName("");
-                setDays("");
-              }}
-            >
-              Reset
-            </Button>
-          </div>
+          {error && <p className="text-sm text-red-500 mb-2">{error}</p>}
+
+          <Button
+            className="w-full"
+            size="lg"
+            type="submit"
+            disabled={isLoading}
+          >
+            {isLoading ? <Spinner className="size-4" /> : "Create Program"}
+          </Button>
         </form>
       </div>
     </div>

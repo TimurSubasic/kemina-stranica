@@ -41,7 +41,7 @@ export default async function ProgramPage({
     return (
       <div>
         {" "}
-        <CreateProgram />{" "}
+        <CreateProgram userId={userId} />{" "}
       </div>
     );
   }
