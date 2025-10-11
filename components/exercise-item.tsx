@@ -12,7 +12,7 @@ interface ExerciseItemProps {
 
 export default function ExerciseItem({ exercise }: ExerciseItemProps) {
   return (
-    <a href={`/exercise/${exercise.id}`} className="flex-1 block">
+    <a href={`/exercise/${exercise.id}`} className="w-full block">
       <Button
         variant="outline"
         size="lg"

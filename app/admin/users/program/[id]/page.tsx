@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import React from "react";
 import CreateProgram from "./create-program";
+import SetupProgram from "./setup-program";
 
 export default async function ProgramPage({
   params,
@@ -22,9 +23,10 @@ export default async function ProgramPage({
     return <div className="w-full mt-10 text-center">No user Found</div>;
   }
 
-  // if (user && user.role === "active") {
-  //   return <div>Has plan</div>;
-  // }
+  //! user has plan set up with exercises
+  if (user && user.role === "active") {
+    return <div>Has plan</div>;
+  }
 
   const { data: program, error: programError } = await supabase
     .from("user-programs")
@@ -58,9 +60,6 @@ export default async function ProgramPage({
     return <div>Error fetching Exercises</div>;
   }
 
-  if (exercises.length === 0) {
-    return <div>Has Program, no exercises added</div>;
-  }
-
-  return <div>Has program has exercises</div>;
+  //! set up  exercisese selction
+  return <SetupProgram days={program.days} />;
 }
