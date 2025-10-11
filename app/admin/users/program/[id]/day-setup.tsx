@@ -25,9 +25,7 @@ import {
 } from "@/components/ui/dialog";
 import { ChevronDown, CirclePlus } from "lucide-react";
 import React, { useState } from "react";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Field, FieldDescription, FieldLabel } from "@/components/ui/field";
+import { Field, FieldLabel } from "@/components/ui/field";
 import {
   Select,
   SelectContent,
@@ -49,16 +47,16 @@ interface ExerciseProps {
   video_url: string;
 }
 
-interface FullExerciseProps {
-  day: number;
-  exerciseId: string;
-  order: number;
-  sets: number;
-  reps: number;
-  weight: string;
-  instructions: string;
-  programId: string;
-}
+// interface FullExerciseProps {
+//   day: number;
+//   exerciseId: string;
+//   order: number;
+//   sets: number;
+//   reps: number;
+//   weight: string;
+//   instructions: string;
+//   programId: string;
+// }
 
 interface DaySetupProps {
   exercises: ExerciseProps[];
@@ -69,8 +67,8 @@ export default function DaySetup({ exercises, day }: DaySetupProps) {
   const [selectedExercises, setSelectedExercises] = useState<ExerciseProps[]>(
     []
   );
-  const [sets, setSets] = useState<number>();
-  const [reps, setReps] = useState<number>();
+  const [sets, setSets] = useState("");
+  const [reps, setReps] = useState("");
   const [weight, setWeight] = useState("");
   const [weightType, setWeightType] = useState("KG");
 
@@ -134,7 +132,7 @@ export default function DaySetup({ exercises, day }: DaySetupProps) {
                       <div className="grid gap-3">
                         <Field>
                           <FieldLabel htmlFor="sets">Sets</FieldLabel>
-                          <Select name="sets" required>
+                          <Select name="sets" required onValueChange={setSets}>
                             <SelectTrigger id="sets" name="sets">
                               <SelectValue placeholder="Select sets" />
                             </SelectTrigger>
@@ -151,7 +149,7 @@ export default function DaySetup({ exercises, day }: DaySetupProps) {
                       <div className="grid gap-3">
                         <Field>
                           <FieldLabel htmlFor="reps">Reps</FieldLabel>
-                          <Select name="reps" required>
+                          <Select name="reps" required onValueChange={setReps}>
                             <SelectTrigger id="reps" name="reps">
                               <SelectValue placeholder="Select reps" />
                             </SelectTrigger>
@@ -176,6 +174,7 @@ export default function DaySetup({ exercises, day }: DaySetupProps) {
                               type="number"
                               step="any"
                               placeholder="100"
+                              onChange={(e) => setWeight(e.target.value)}
                             />
                             <InputGroupAddon align={"inline-end"}>
                               <DropdownMenu>
@@ -210,7 +209,14 @@ export default function DaySetup({ exercises, day }: DaySetupProps) {
                       <DialogClose asChild>
                         <Button variant="outline">Cancel</Button>
                       </DialogClose>
-                      <Button type="submit">Save changes</Button>
+                      <Button
+                        onClick={() =>
+                          console.log(sets, reps, weight, weightType)
+                        }
+                        type="submit"
+                      >
+                        Save changes
+                      </Button>
                     </DialogFooter>
                   </DialogContent>
                 </form>
