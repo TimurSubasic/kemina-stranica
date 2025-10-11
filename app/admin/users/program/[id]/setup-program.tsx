@@ -5,6 +5,8 @@ import DaySetup from "./day-setup";
 export default async function SetupProgram({ days }: { days: number }) {
   const supabase = await createClient();
 
+  console.log(days);
+
   const { data: exercises, error } = await supabase
     .from("exercises")
     .select()
