@@ -1,6 +1,7 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
+import type { ProgramExerciseInput } from "./day-setup";
 
 interface programProps {
   props: {
@@ -36,5 +37,38 @@ export async function createProgram({ props }: programProps) {
     return {
       success: true,
     };
+  }
+}
+
+export async function addExercisesToProgram({
+  programId,
+  day,
+  items,
+}: {
+  programId: string;
+  day: number;
+  items: ProgramExerciseInput[];
+}) {
+  const supabase = await createClient();
+
+  const rows = items.flatMap((item) =>
+    [1, 2, 3, 4].map((week) => ({
+      program_id: programId,
+      exercise_id: item.exercise_id,
+      week,
+      day,
+      order: item.order,
+      sets: item.sets,
+      reps: item.reps,
+      weight: item.weight,
+      instructions: item.instructions ?? null,
+    }))
+  );
+
+  const { error } = await supabase.from("program-exercises").insert(rows);
+
+  if (error) {
+    console.error(error);
+    throw new Error("Failed to insert exercises");
   }
 }
