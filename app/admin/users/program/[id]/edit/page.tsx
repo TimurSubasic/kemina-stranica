@@ -55,7 +55,7 @@ export default async function EditProgram({
     order: number;
     sets: number;
     reps: number;
-    weight: number;
+    weight: string;
     instructions: string;
     exercise:
       | {
