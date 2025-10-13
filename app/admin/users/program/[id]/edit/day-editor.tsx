@@ -21,7 +21,7 @@ export default function DayEditor({
       <h2 className="font-semibold">
         Week {week}, Day {day}
       </h2>
-      {exercises.map((ex, i) => (
+      {exercises.map((ex) => (
         <div key={ex.id} className="border p-2 rounded-md">
           <ExerciseItem exercise={ex.exercise} />
           <p>Sets: {ex.sets}</p>

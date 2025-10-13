@@ -1,7 +1,7 @@
 import {
   Dumbbell,
   Home,
-  ShieldUser,
+  // ShieldUser,
   Users,
   User,
   SquarePen,
@@ -19,7 +19,6 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { ThemeSwitcher } from "./theme-switcher";
 import { LogoutButton } from "./logout-button";

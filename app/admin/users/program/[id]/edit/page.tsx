@@ -1,6 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
-import React, { startTransition } from "react";
+import React from "react";
 import DayWeekSelector from "./day-week-selector";
 
 export default async function EditProgram({

@@ -104,6 +104,7 @@ export default function DaySetup({
             router.refresh();
           });
         } catch (e) {
+          console.error(e);
           toast.error("Error occured");
         }
       }
