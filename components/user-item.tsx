@@ -26,24 +26,28 @@ export default function UserItem({ user }: userItemProps) {
 
         <div
           className={`flex flex-col items-start justify-center 
-           ${user.role === "active" && "text-primary"}
+           ${user.role === "active" && "text-emerald-500"}
            ${user.role === "inactive" && "text-destructive"}
           `}
         >
           <p className="text-sm text-muted-foreground">Status:</p>
-          <p>{user.role}</p>
+          <p className="font-bold capitalize">{user.role}</p>
         </div>
       </div>
 
       <div className="flex flex-row-reverse justify-center gap-2 sm:flex-col w-full sm:w-auto">
         <a href={`/admin/users/program/${user.id}`}>
           {user.role === "inactive" ? (
-            <Button size="lg">Create Plan</Button>
+            <Button size="lg" className="w-full">
+              Create Plan
+            </Button>
           ) : (
-            <Button size="lg">View Plan</Button>
+            <Button size="lg" className="w-full">
+              View Plan
+            </Button>
           )}
         </a>
-        <Button variant="destructive" size="lg">
+        <Button variant="destructive" size="lg" className="w-full">
           Delete User
         </Button>
       </div>

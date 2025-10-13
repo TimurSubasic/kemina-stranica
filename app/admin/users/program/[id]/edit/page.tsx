@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import React, { startTransition } from "react";
+import DayWeekSelector from "./day-week-selector";
 
 export default async function EditProgram({
   params,
@@ -23,13 +24,51 @@ export default async function EditProgram({
 
   const { data: exercises, error: exercisesError } = await supabase
     .from("program-exercises")
-    .select()
-    .eq("program_id", program.id);
+    .select(
+      `
+    id,
+    week,
+    day,
+    order,
+    sets,
+    reps,
+    weight,
+    instructions,
+    exercise: exercise_id (id, name, description, video_url)
+  `
+    )
+    .eq("program_id", program.id)
+    .order("week", { ascending: true })
+    .order("day", { ascending: true })
+    .order("order", { ascending: true });
 
   if (!exercises || exercisesError) {
     console.log(exercisesError);
+    return null;
     //? maybe redirect back but not now
   }
 
-  return <div></div>;
+  const normalizedExercises = (exercises as any[]).map((e) => {
+    const related = Array.isArray(e.exercise) ? e.exercise[0] : e.exercise;
+    return {
+      id: e.id,
+      week: e.week,
+      day: e.day,
+      order: e.order,
+      sets: e.sets,
+      reps: e.reps,
+      weight: e.weight,
+      instructions: e.instructions,
+      // ensure shape matches ProgramExerciseProps
+      exercise: related ?? { id: "", name: "", description: "", video_url: "" },
+    };
+  });
+
+  return (
+    <DayWeekSelector
+      programId={program.id}
+      totalDays={program.days}
+      exercises={normalizedExercises}
+    />
+  );
 }
