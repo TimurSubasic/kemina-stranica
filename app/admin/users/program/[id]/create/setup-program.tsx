@@ -5,9 +5,11 @@ import DaySetup from "./day-setup";
 export default async function SetupProgram({
   days,
   programId,
+  userId,
 }: {
   days: number;
   programId: string;
+  userId: string;
 }) {
   const supabase = await createClient();
 
@@ -18,7 +20,7 @@ export default async function SetupProgram({
 
   if (!exercises || error) {
     console.log(error);
-    return <p>No exercises found</p>;
+    return <p>No exercises found, please refresh the page!</p>;
   }
 
   return (
@@ -27,8 +29,10 @@ export default async function SetupProgram({
         <DaySetup
           key={i + 1}
           day={i + 1}
+          finalDay={days}
           exercises={exercises}
           programId={programId}
+          userId={userId}
         />
       ))}
     </div>

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import "./globals.css";
-import { SidebarProvider } from "@/components/ui/sidebar";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
 import { Toaster } from "sonner";
 
@@ -37,10 +37,11 @@ export default async function RootLayout({
           disableTransitionOnChange
         >
           <SidebarProvider defaultOpen={false}>
-            <AppSidebar />
-
-            <main className="flex-1">{children}</main>
-            <Toaster />
+            <SidebarInset>
+              <main className="flex-1">{children}</main>
+              <Toaster />
+            </SidebarInset>
+            <AppSidebar side="right" />
           </SidebarProvider>
         </ThemeProvider>
       </body>

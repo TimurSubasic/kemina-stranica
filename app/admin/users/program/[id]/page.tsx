@@ -1,4 +1,6 @@
+import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
+import { toast } from "sonner";
 
 export default async function HandleProgram({
   params,
@@ -7,8 +9,23 @@ export default async function HandleProgram({
 }) {
   const userId = (await params).id;
 
-  //!! check if user has a plan or not and render create or edit
-  if (true) {
+  const supabase = await createClient();
+
+  const { data: user, error: userError } = await supabase
+    .from("users")
+    .select()
+    .eq("id", userId)
+    .single();
+
+  if (!user || userError) {
+    console.log(userError);
+
+    toast.error("User not found");
+
+    redirect("/admin/users");
+  }
+
+  if (user.role === "inactive") {
     redirect(`/admin/users/program/${userId}/create`);
   } else {
     redirect(`/admin/users/program/${userId}/edit`);

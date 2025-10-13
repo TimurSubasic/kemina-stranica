@@ -2,6 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import React from "react";
 import CreateProgram from "./create-program";
 import SetupProgram from "./setup-program";
+import { redirect } from "next/navigation";
 
 export default async function ProgramPage({
   params,
@@ -11,22 +12,6 @@ export default async function ProgramPage({
   const userId = (await params).id;
 
   const supabase = await createClient();
-
-  const { data: user, error: userError } = await supabase
-    .from("users")
-    .select("*")
-    .eq("id", userId)
-    .single();
-
-  if (!user || userError) {
-    console.log(userError);
-    return <div className="w-full mt-10 text-center">No user Found</div>;
-  }
-
-  //! user has plan set up with exercises
-  if (user && user.role === "active") {
-    return <div>Has plan</div>;
-  }
 
   const { data: program, error: programError } = await supabase
     .from("user-programs")
@@ -51,8 +36,7 @@ export default async function ProgramPage({
     .from("program-exercises")
     .select("day")
     .eq("program_id", program.id)
-    .eq("week", 4)
-    .eq("day", program.days);
+    .eq("week", 4);
 
   if (!exercises || exercisesError) {
     console.log(exercisesError);
@@ -61,8 +45,14 @@ export default async function ProgramPage({
 
   if (exercises.length === 0) {
     console.log(exercises);
-    return <SetupProgram days={program.days} programId={program.id} />;
+    return (
+      <SetupProgram
+        days={program.days}
+        programId={program.id}
+        userId={userId}
+      />
+    );
+  } else {
+    redirect(`/admin/users/program/${userId}`);
   }
-
-  return <div>Completed setup</div>;
 }

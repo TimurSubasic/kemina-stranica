@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { startTransition, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -12,7 +12,9 @@ import {
 } from "@/components/ui/dialog";
 import { CirclePlus } from "lucide-react";
 import ExerciseRow from "./exercise-row";
-import { addExercisesToProgram } from "./actions";
+import { addExercisesToProgram, changeToActive } from "./actions";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 interface ExerciseProps {
   id: string;
@@ -34,16 +36,27 @@ export interface ProgramExerciseInput {
 interface DaySetupProps {
   exercises: ExerciseProps[];
   day: number;
+  finalDay: number;
   programId: string;
+  userId: string;
 }
 
-export default function DaySetup({ exercises, day, programId }: DaySetupProps) {
+export default function DaySetup({
+  exercises,
+  day,
+  finalDay,
+  programId,
+  userId,
+}: DaySetupProps) {
   const [selectedExercises, setSelectedExercises] = useState<ExerciseProps[]>(
     []
   );
   const [exerciseData, setExerciseData] = useState<ProgramExerciseInput[]>([]);
   const [addOpen, setAddOpen] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [finished, setFinished] = useState(false);
+
+  const router = useRouter();
 
   const handleSelect = (exercise: ExerciseProps) => {
     if (selectedExercises.some((ex) => ex.id === exercise.id)) return;
@@ -81,17 +94,33 @@ export default function DaySetup({ exercises, day, programId }: DaySetupProps) {
         day,
         items: exerciseData,
       });
-      alert(`Day ${day} saved successfully`);
+      toast.success(`Day ${day} saved successfully`);
+      setFinished(true);
+      if (finalDay === day) {
+        try {
+          await changeToActive({ userId });
+
+          startTransition(() => {
+            router.refresh();
+          });
+        } catch (e) {
+          toast.error("Error occured");
+        }
+      }
     } catch (e) {
       console.error(e);
-      alert("Error saving day");
+      toast.error("Error saving day");
     } finally {
       setSaving(false);
     }
   };
 
   return (
-    <div className="my-5 p-5 flex flex-col items-center gap-5 w-full max-w-4xl mx-auto border border-border rounded-md">
+    <div
+      className={`my-5 p-5 flex flex-col items-center gap-5 w-full max-w-4xl mx-auto border border-border rounded-md ${
+        finished && "hidden"
+      } `}
+    >
       <p className="text-base font-bold">Day: {day}</p>
 
       {/* Selected Exercises */}

@@ -130,7 +130,10 @@ export default function ExerciseRow({
                     type="number"
                     step="any"
                     placeholder="100"
-                    onChange={(e) => onChange({ weight: e.target.value })}
+                    defaultValue={value.weight ? value.weight.toString() : ""}
+                    onChange={(e) =>
+                      onChange({ weight: e.target.value + weightType })
+                    }
                   />
                   <InputGroupAddon align={"inline-end"}>
                     <DropdownMenu>
@@ -149,6 +152,9 @@ export default function ExerciseRow({
                         </DropdownMenuItem>
                         <DropdownMenuItem onClick={() => setWeightType("LBS")}>
                           LBS
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => setWeightType("None")}>
+                          None
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>

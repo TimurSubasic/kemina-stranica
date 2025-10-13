@@ -32,10 +32,20 @@ const adminItems = [
     url: "/",
     icon: Home,
   },
+  // {
+  //   title: "Admin",
+  //   url: "/admin",
+  //   icon: ShieldUser,
+  // },
   {
-    title: "Admin",
-    url: "/admin",
-    icon: ShieldUser,
+    title: "Dashboard",
+    url: "/admin/dashboard",
+    icon: LayoutDashboard,
+  },
+  {
+    title: "User Management",
+    url: "/admin/users",
+    icon: Users,
   },
   {
     title: "Exercises",
@@ -51,16 +61,6 @@ const adminItems = [
     title: "Delete Exercise",
     url: "/admin/exercises/delete",
     icon: Trash2,
-  },
-  {
-    title: "User Management",
-    url: "/admin/users",
-    icon: Users,
-  },
-  {
-    title: "Dashboard",
-    url: "/admin/dashboard",
-    icon: LayoutDashboard,
   },
 ];
 
@@ -87,7 +87,9 @@ const userItems = [
   },
 ];
 
-export async function AppSidebar() {
+export async function AppSidebar({
+  ...props
+}: React.ComponentProps<typeof Sidebar>) {
   const supabase = await createClient();
 
   const { data, error } = await supabase.auth.getClaims();
@@ -104,9 +106,8 @@ export async function AppSidebar() {
     return null;
   } else
     return (
-      <Sidebar side="right">
+      <Sidebar {...props}>
         <SidebarContent>
-          <SidebarTrigger className="m-5" />
           <SidebarGroup>
             <SidebarGroupLabel>Menu</SidebarGroupLabel>
             <SidebarGroupContent>

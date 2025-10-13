@@ -24,7 +24,12 @@ export default function UserItem({ user }: userItemProps) {
           <p>{user.name}</p>
         </div>
 
-        <div className="flex flex-col items-start justify-center ">
+        <div
+          className={`flex flex-col items-start justify-center 
+           ${user.role === "active" && "text-primary"}
+           ${user.role === "inactive" && "text-destructive"}
+          `}
+        >
           <p className="text-sm text-muted-foreground">Status:</p>
           <p>{user.role}</p>
         </div>

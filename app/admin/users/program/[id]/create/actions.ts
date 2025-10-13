@@ -67,8 +67,35 @@ export async function addExercisesToProgram({
 
   const { error } = await supabase.from("program-exercises").insert(rows);
 
+  for (let week = 1; week <= 4; week++) {
+    const { error } = await supabase.from("days-completed").insert({
+      program_id: programId,
+      day,
+      week,
+    });
+
+    if (error) {
+      console.error(error);
+      throw new Error("Failed to create day");
+    }
+  }
+
   if (error) {
     console.error(error);
     throw new Error("Failed to insert exercises");
+  }
+}
+
+export async function changeToActive({ userId }: { userId: string }) {
+  const supabase = await createClient();
+
+  const { error } = await supabase
+    .from("users")
+    .update({ role: "active" })
+    .eq("id", userId);
+
+  if (error) {
+    console.error(error);
+    throw new Error("Failed to change to active state");
   }
 }
