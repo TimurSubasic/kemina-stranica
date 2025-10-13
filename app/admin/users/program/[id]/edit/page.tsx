@@ -48,7 +48,26 @@ export default async function EditProgram({
     //? maybe redirect back but not now
   }
 
-  const normalizedExercises = (exercises as any[]).map((e) => {
+  type RawExercise = {
+    id: string;
+    week: number;
+    day: number;
+    order: number;
+    sets: number;
+    reps: number;
+    weight: number;
+    instructions: string;
+    exercise:
+      | {
+          id: string;
+          name: string;
+          description: string;
+          video_url: string;
+        }[]
+      | null;
+  };
+
+  const normalizedExercises = (exercises as RawExercise[]).map((e) => {
     const related = Array.isArray(e.exercise) ? e.exercise[0] : e.exercise;
     return {
       id: e.id,
