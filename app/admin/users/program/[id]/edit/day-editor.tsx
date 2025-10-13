@@ -27,6 +27,7 @@ export default function DayEditor({
           <p>Sets: {ex.sets}</p>
           <p>Reps: {ex.reps}</p>
           <p>Weight: {ex.weight}</p>
+          <p>Program id: {programId} </p>
         </div>
       ))}
     </div>
