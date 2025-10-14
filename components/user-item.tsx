@@ -36,7 +36,7 @@ export default function UserItem({ user }: userItemProps) {
       </div>
 
       <div className="flex flex-row-reverse justify-center gap-2 sm:flex-col w-full sm:w-auto">
-        <a href={`/admin/users/program/${user.id}`}>
+        <a href={`/admin/users/program/${user.id}`} className="flex-1">
           {user.role === "inactive" ? (
             <Button size="lg" className="w-full">
               Create Plan
@@ -47,9 +47,11 @@ export default function UserItem({ user }: userItemProps) {
             </Button>
           )}
         </a>
-        <Button variant="destructive" size="lg" className="w-full">
-          Delete User
-        </Button>
+        <div className="flex-1">
+          <Button variant="destructive" size="lg" className="w-full">
+            Delete User
+          </Button>
+        </div>
       </div>
     </div>
   );

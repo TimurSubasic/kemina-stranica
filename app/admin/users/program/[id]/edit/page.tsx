@@ -83,11 +83,23 @@ export default async function EditProgram({
     };
   });
 
+  const { data: completed, error: completedError } = await supabase
+    .from("days-completed")
+    .select()
+    .eq("program_id", program.id);
+
+  if (!completed || completedError) {
+    console.log(completedError);
+    return null;
+    //? Maybe redirect back
+  }
+
   return (
     <DayWeekSelector
       programId={program.id}
       totalDays={program.days}
       exercises={normalizedExercises}
+      completed={completed || []}
     />
   );
 }
