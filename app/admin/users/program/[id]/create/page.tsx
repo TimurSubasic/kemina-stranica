@@ -36,8 +36,8 @@ export default async function ProgramPage({
     .from("program-exercises")
     .select("day")
     .eq("program_id", program.id)
-    .eq("week", 4);
-
+    .eq("week", 4)
+    .eq("day", program.days);
   if (!exercises || exercisesError) {
     console.log(exercisesError);
     return <div>Error fetching Exercises</div>;

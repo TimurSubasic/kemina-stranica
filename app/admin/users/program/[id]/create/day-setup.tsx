@@ -28,8 +28,10 @@ export interface ProgramExerciseInput {
   order: number;
   sets: number;
   reps: number;
-  weight: string;
+  weight?: string;
   instructions?: string;
+  time?: string;
+  distance?: string;
   day: number;
 }
 
@@ -52,7 +54,7 @@ export default function DaySetup({
     []
   );
   const [exerciseData, setExerciseData] = useState<ProgramExerciseInput[]>([]);
-  const [addOpen, setAddOpen] = useState(false);
+  const [open, setOpen] = useState(false);
   const [saving, setSaving] = useState(false);
   const [finished, setFinished] = useState(false);
 
@@ -66,10 +68,12 @@ export default function DaySetup({
       {
         exercise_id: exercise.id,
         order: prev.length + 1,
-        sets: 0,
-        reps: 0,
+        sets: 1,
+        reps: 1,
         weight: "",
         instructions: "",
+        time: "",
+        distance: "",
         day,
       },
     ]);
@@ -138,7 +142,7 @@ export default function DaySetup({
       </div>
 
       {/* Add Exercises */}
-      <Dialog open={addOpen} onOpenChange={setAddOpen}>
+      <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger className="w-full py-5 flex items-center justify-center gap-3 outline outline-primary rounded bg-secondary text-primary hover:bg-primary/20 duration-150">
           <CirclePlus />
           Add Exercise

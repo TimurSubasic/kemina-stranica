@@ -60,8 +60,10 @@ export async function addExercisesToProgram({
       order: item.order,
       sets: item.sets,
       reps: item.reps,
-      weight: item.weight,
+      weight: item.weight ?? null,
       instructions: item.instructions ?? null,
+      time: item.time ?? null,
+      distance: item.distance ?? null,
     }))
   );
 

@@ -35,6 +35,7 @@ import {
 import { ChevronDown } from "lucide-react";
 import type { ProgramExerciseInput } from "./day-setup";
 import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
 
 interface ExerciseProps {
   id: string;
@@ -56,8 +57,9 @@ export default function ExerciseRow({
   onChange,
   onRemove,
 }: Props) {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   const [weightType, setWeightType] = useState("KG");
+  const [distanceType, setDistanceType] = useState("m");
 
   return (
     <div className="flex gap-5 items-center justify-center border p-3 rounded-md">
@@ -115,7 +117,7 @@ export default function ExerciseRow({
                   <SelectContent>
                     {Array.from({ length: 20 }, (_, i) => i + 1).map((n) => (
                       <SelectItem key={n} value={n.toString()}>
-                        {n}
+                        {n} {n === 1 ? "rep" : "reps"}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -153,8 +155,56 @@ export default function ExerciseRow({
                         <DropdownMenuItem onClick={() => setWeightType("LBS")}>
                           LBS
                         </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => setWeightType("None")}>
-                          None
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </InputGroupAddon>
+                </InputGroup>
+              </Field>
+
+              {/* Time */}
+              <Field>
+                <FieldLabel>Time</FieldLabel>
+                <Input
+                  placeholder="1 min 30s"
+                  defaultValue={value.time ? value.time.toString() : ""}
+                  onChange={(e) => onChange({ time: e.target.value })}
+                />
+              </Field>
+
+              {/* Distance */}
+              <Field>
+                <FieldLabel>Distance</FieldLabel>
+                <InputGroup>
+                  <InputGroupInput
+                    type="number"
+                    step="any"
+                    placeholder="15"
+                    defaultValue={
+                      value.distance ? value.distance.toString() : ""
+                    }
+                    onChange={(e) =>
+                      onChange({ distance: e.target.value + distanceType })
+                    }
+                  />
+                  <InputGroupAddon align={"inline-end"}>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <InputGroupButton
+                          variant="ghost"
+                          aria-label="Distance Type"
+                        >
+                          {distanceType}
+                          <ChevronDown />
+                        </InputGroupButton>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuItem onClick={() => setDistanceType("m")}>
+                          Meters
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          onClick={() => setDistanceType("Feet")}
+                        >
+                          Feet
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
