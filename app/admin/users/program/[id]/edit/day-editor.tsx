@@ -49,9 +49,6 @@ export default function DayEditor({
   exercises: ProgramExerciseProps[];
   completed: boolean;
 }) {
-  if (!exercises.length)
-    return <p className="text-muted-foreground">No exercises for this day.</p>;
-
   //! so not unused
   console.log("Program Id: " + programId);
 
@@ -85,6 +82,8 @@ export default function DayEditor({
     setInsturctions("");
     setOpen(false);
   };
+  if (!exercises.length)
+    return <p className="text-muted-foreground">No exercises for this day.</p>;
 
   return (
     <div className="space-y-5">
