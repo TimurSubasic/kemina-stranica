@@ -17,8 +17,10 @@ export interface ProgramExerciseProps {
   order: number;
   sets: number;
   reps: number;
-  weight: string;
+  weight?: string;
   instructions?: string;
+  time?: string;
+  distance?: string;
   exercise: {
     id: string;
     name: string;

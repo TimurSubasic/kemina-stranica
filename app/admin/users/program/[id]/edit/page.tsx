@@ -34,6 +34,8 @@ export default async function EditProgram({
     reps,
     weight,
     instructions,
+    time,
+    distance,
     exercise: exercise_id (id, name, description, video_url)
   `
     )
@@ -57,6 +59,8 @@ export default async function EditProgram({
     reps: number;
     weight: string;
     instructions: string;
+    time: string;
+    distance: string;
     exercise:
       | {
           id: string;
@@ -78,6 +82,8 @@ export default async function EditProgram({
       reps: e.reps,
       weight: e.weight,
       instructions: e.instructions,
+      time: e.time,
+      distance: e.distance,
       // ensure shape matches ProgramExerciseProps
       exercise: related ?? { id: "", name: "", description: "", video_url: "" },
     };
