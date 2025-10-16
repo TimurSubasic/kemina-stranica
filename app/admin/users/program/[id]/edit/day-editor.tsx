@@ -36,9 +36,9 @@ import { BadgeCheck, BadgeX, ChevronDown } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import ExerciseInfo from "@/components/exercise-info";
 import { Input } from "@/components/ui/input";
-import editExercise from "./actions";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { deleteExercise, editExercise } from "./actions";
 
 export default function DayEditor({
   programId,
@@ -61,6 +61,20 @@ export default function DayEditor({
   const [activeExerciseId, setActiveExerciseId] = useState<string | null>(null);
   const [weightType, setWeightType] = useState("KG");
   const [distanceType, setDistanceType] = useState("M");
+
+  const handleDelete = async (id: string) => {
+    toast.loading("Deleting exercise...");
+
+    const res = await deleteExercise(id);
+    toast.dismiss();
+
+    if (res.success) {
+      toast.success("Exercise deleted");
+      router.refresh();
+    } else {
+      toast.error("Error deleting exercise");
+    }
+  };
 
   const handleSave = async (
     id: string,
@@ -91,7 +105,15 @@ export default function DayEditor({
     setActiveExerciseId(null);
   };
   if (!exercises.length)
-    return <p className="text-muted-foreground">No exercises for this day.</p>;
+    return (
+      <div>
+        <p className="text-muted-foreground mb-5">No exercises for this day.</p>
+
+        <Button variant="outline" className="w-full" size="lg">
+          Add Exercise
+        </Button>
+      </div>
+    );
 
   return (
     <div className="space-y-5">
@@ -120,7 +142,7 @@ export default function DayEditor({
           {/* buttons */}
           <div className="flex w-full gap-2 my-2">
             <Button
-              onClick={() => console.log(ex)}
+              onClick={() => handleDelete(ex.id)}
               variant="destructive"
               className="flex-1"
               size="lg"
@@ -312,9 +334,19 @@ export default function DayEditor({
       ))}
 
       {/* Buttons */}
-      <div>
-        <Button>AAA</Button>
+      <div className="my-10 border border-primary rounded" />
+      <div className="flex flex-row gap-5 w-full">
+        <Button variant="outline" className="flex-1" size="lg">
+          Reorder
+        </Button>
+        <Button variant="outline" className="flex-1" size="lg">
+          Add Exercise
+        </Button>
       </div>
+      <div className="my-10 border border-destructive rounded" />
+      <Button variant="destructive" size="lg" className="w-full">
+        Delete Program
+      </Button>
     </div>
   );
 }

@@ -8,7 +8,7 @@ interface EditProps {
   };
 }
 
-export default async function editExercise({ props }: EditProps) {
+export async function editExercise({ props }: EditProps) {
   const supabase = await createClient();
 
   const weightValue = props.formData.get("weightValue")?.toString() || "";
@@ -41,4 +41,24 @@ export default async function editExercise({ props }: EditProps) {
     return {
       success: true,
     };
+}
+
+export async function deleteExercise(id: string) {
+  const supabase = await createClient();
+
+  const { error } = await supabase
+    .from("program-exercises")
+    .delete()
+    .eq("id", id);
+
+  if (error) {
+    console.error(error);
+    return {
+      success: false,
+    };
+  }
+
+  return {
+    success: true,
+  };
 }
