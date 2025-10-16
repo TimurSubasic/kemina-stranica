@@ -77,6 +77,8 @@ export default function DayEditor({
     setActiveExerciseId(null);
     const res = await editExercise(data);
 
+    toast.dismiss();
+
     if (res.success) {
       toast.success("Exercise updated");
       router.refresh();
