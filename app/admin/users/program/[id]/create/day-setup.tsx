@@ -38,17 +38,17 @@ export interface ProgramExerciseInput {
 interface DaySetupProps {
   exercises: ExerciseProps[];
   day: number;
-  finalDay: number;
   programId: string;
   userId: string;
+  daysSet: number[];
 }
 
 export default function DaySetup({
   exercises,
   day,
-  finalDay,
   programId,
   userId,
+  daysSet,
 }: DaySetupProps) {
   const [selectedExercises, setSelectedExercises] = useState<ExerciseProps[]>(
     []
@@ -56,7 +56,6 @@ export default function DaySetup({
   const [exerciseData, setExerciseData] = useState<ProgramExerciseInput[]>([]);
   const [open, setOpen] = useState(false);
   const [saving, setSaving] = useState(false);
-  const [finished, setFinished] = useState(false);
 
   const router = useRouter();
 
@@ -99,19 +98,7 @@ export default function DaySetup({
         items: exerciseData,
       });
       toast.success(`Day ${day} saved successfully`);
-      setFinished(true);
-      if (finalDay === day) {
-        try {
-          await changeToActive({ userId });
-
-          startTransition(() => {
-            router.refresh();
-          });
-        } catch (e) {
-          console.error(e);
-          toast.error("Error occured");
-        }
-      }
+      router.refresh();
     } catch (e) {
       console.error(e);
       toast.error("Error saving day");
@@ -120,12 +107,12 @@ export default function DaySetup({
     }
   };
 
+  if (daysSet.includes(day)) {
+    return;
+  }
+
   return (
-    <div
-      className={`my-5 p-5 flex flex-col items-center gap-5 w-full max-w-4xl mx-auto border border-border rounded-md ${
-        finished && "hidden"
-      } `}
-    >
+    <div className="my-5 p-5 flex flex-col items-center gap-5 w-full max-w-4xl mx-auto border border-border rounded-md">
       <p className="text-base font-bold">Day: {day}</p>
 
       {/* Selected Exercises */}

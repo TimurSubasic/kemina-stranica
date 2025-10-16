@@ -23,28 +23,27 @@ export default async function ProgramPage({
     console.log(programError);
   }
 
-  if (!program) {
+  const { data: user, error: userError } = await supabase
+    .from("users")
+    .select("role")
+    .eq("id", userId)
+    .single();
+
+  if (!user || userError) {
+    console.log(userError);
+    return <div>Cant find user</div>;
+  }
+
+  if (user.role === "active") {
+    redirect(`/admin/users/program/${userId}`);
+  } else if (!program) {
     return (
       <div>
         {" "}
         <CreateProgram userId={userId} />{" "}
       </div>
     );
-  }
-
-  const { data: exercises, error: exercisesError } = await supabase
-    .from("program-exercises")
-    .select("day")
-    .eq("program_id", program.id)
-    .eq("week", 4)
-    .eq("day", program.days);
-  if (!exercises || exercisesError) {
-    console.log(exercisesError);
-    return <div>Error fetching Exercises</div>;
-  }
-
-  if (exercises.length === 0) {
-    console.log(exercises);
+  } else
     return (
       <SetupProgram
         days={program.days}
@@ -52,7 +51,4 @@ export default async function ProgramPage({
         userId={userId}
       />
     );
-  } else {
-    redirect(`/admin/users/program/${userId}`);
-  }
 }

@@ -98,6 +98,12 @@ export async function changeToActive({ userId }: { userId: string }) {
 
   if (error) {
     console.error(error);
-    throw new Error("Failed to change to active state");
+    return {
+      success: false,
+    };
+  } else {
+    return {
+      success: true,
+    };
   }
 }

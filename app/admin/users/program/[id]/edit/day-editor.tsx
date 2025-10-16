@@ -87,8 +87,6 @@ export default function DayEditor({
     }
   };
 
-  console.log(exercises);
-
   const handleCancel = () => {
     setActiveExerciseId(null);
   };

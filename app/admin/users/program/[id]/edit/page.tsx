@@ -22,6 +22,19 @@ export default async function EditProgram({
     redirect(`/admin/users/program/${userId}`);
   }
 
+  const { data: user, error: userError } = await supabase
+    .from("users")
+    .select()
+    .eq("id", userId)
+    .single();
+
+  if (!user || userError) {
+    console.log(userError);
+    redirect(`/admin/users/program/${userId}`);
+  } else if (user.role === "inactive") {
+    redirect(`/admin/users/program/${userId}`);
+  }
+
   const { data: exercises, error: exercisesError } = await supabase
     .from("program-exercises")
     .select(
@@ -92,7 +105,9 @@ export default async function EditProgram({
   const { data: completed, error: completedError } = await supabase
     .from("days-completed")
     .select()
-    .eq("program_id", program.id);
+    .eq("program_id", program.id)
+    .order("week", { ascending: true })
+    .order("day", { ascending: true });
 
   if (!completed || completedError) {
     console.log(completedError);

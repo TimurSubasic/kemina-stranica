@@ -59,7 +59,23 @@ export default function ExerciseRow({
 }: Props) {
   const [open, setOpen] = useState(true);
   const [weightType, setWeightType] = useState("KG");
-  const [distanceType, setDistanceType] = useState("m");
+  const [distanceType, setDistanceType] = useState("M");
+
+  const handleSave = () => {
+    if (value.weight) {
+      onChange({
+        weight: value.weight + " " + weightType,
+      });
+    }
+
+    if (value.distance) {
+      onChange({
+        distance: value.distance + " " + distanceType,
+      });
+    }
+
+    setOpen(false);
+  };
 
   return (
     <div className="flex gap-5 items-center justify-center border p-3 rounded-md">
@@ -133,9 +149,7 @@ export default function ExerciseRow({
                     step="any"
                     placeholder="100"
                     defaultValue={value.weight ? value.weight.toString() : ""}
-                    onChange={(e) =>
-                      onChange({ weight: e.target.value + weightType })
-                    }
+                    onChange={(e) => onChange({ weight: e.target.value })}
                   />
                   <InputGroupAddon align={"inline-end"}>
                     <DropdownMenu>
@@ -182,9 +196,7 @@ export default function ExerciseRow({
                     defaultValue={
                       value.distance ? value.distance.toString() : ""
                     }
-                    onChange={(e) =>
-                      onChange({ distance: e.target.value + distanceType })
-                    }
+                    onChange={(e) => onChange({ distance: e.target.value })}
                   />
                   <InputGroupAddon align={"inline-end"}>
                     <DropdownMenu>
@@ -227,7 +239,7 @@ export default function ExerciseRow({
               <DialogClose asChild>
                 <Button variant="destructive">Cancel</Button>
               </DialogClose>
-              <Button onClick={() => setOpen(false)}>Save</Button>
+              <Button onClick={() => handleSave()}>Save</Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>

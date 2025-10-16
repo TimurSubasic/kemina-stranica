@@ -14,12 +14,12 @@ export default async function editExercise({ props }: EditProps) {
   const weightValue = props.formData.get("weightValue")?.toString() || "";
   const weightType = props.formData.get("weightType")?.toString() || "";
 
-  const weight = weightValue ? `${weightValue}${weightType}` : null;
+  const weight = weightValue ? `${weightValue} ${weightType}` : null;
 
   const distanceValue = props.formData.get("distanceValue")?.toString() || "";
   const distanceType = props.formData.get("distanceType")?.toString() || "";
 
-  const distance = distanceValue ? `${distanceValue}${distanceType}` : null;
+  const distance = distanceValue ? `${distanceValue} ${distanceType}` : null;
 
   const { error } = await supabase
     .from("program-exercises")

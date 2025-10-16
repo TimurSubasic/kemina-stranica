@@ -48,21 +48,26 @@ export default function DayWeekSelector({
   exercises: ProgramExerciseProps[];
   completed: CompletedProps[];
 }) {
-  const [week, setWeek] = useState(1);
-  const [day, setDay] = useState(1);
+  const nextDay = completed.find((d) => !d.completed);
+
+  const [week, setWeek] = useState(nextDay?.week || 1);
+  const [day, setDay] = useState(nextDay?.day || 1);
 
   const filteredExercises = exercises.filter(
     (ex) => ex.week === week && ex.day === day
   );
 
-  const isCompleted =
-    completed.find((comp) => comp.week === week && comp.day === day)
-      ?.completed ?? false;
+  const isCompleted = completed.find(
+    (comp) => comp.week === week && comp.day === day
+  )?.completed;
 
   return (
     <div className="space-y-4 my-5 p-5">
       <div className="flex gap-4">
-        <Select onValueChange={(v) => setWeek(Number(v))} defaultValue="1">
+        <Select
+          onValueChange={(v) => setWeek(Number(v))}
+          defaultValue={week.toString()}
+        >
           <SelectTrigger className="w-[120px]">
             <SelectValue placeholder="Week" />
           </SelectTrigger>
@@ -75,7 +80,10 @@ export default function DayWeekSelector({
           </SelectContent>
         </Select>
 
-        <Select onValueChange={(v) => setDay(Number(v))} defaultValue="1">
+        <Select
+          onValueChange={(v) => setDay(Number(v))}
+          defaultValue={day.toString()}
+        >
           <SelectTrigger className="w-[120px]">
             <SelectValue placeholder="Day" />
           </SelectTrigger>
@@ -94,7 +102,7 @@ export default function DayWeekSelector({
         week={week}
         day={day}
         exercises={filteredExercises}
-        completed={isCompleted}
+        completed={isCompleted || false}
       />
     </div>
   );
