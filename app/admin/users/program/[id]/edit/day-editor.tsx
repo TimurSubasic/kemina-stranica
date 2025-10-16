@@ -35,6 +35,10 @@ import {
 import { BadgeCheck, BadgeX, ChevronDown } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import ExerciseInfo from "@/components/exercise-info";
+import { Input } from "@/components/ui/input";
+import editExercise from "./actions";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 export default function DayEditor({
   programId,
@@ -52,35 +56,39 @@ export default function DayEditor({
   //! so not unused
   console.log("Program Id: " + programId);
 
-  const [open, setOpen] = useState(false);
+  const router = useRouter();
+
+  const [activeExerciseId, setActiveExerciseId] = useState<string | null>(null);
   const [weightType, setWeightType] = useState("KG");
-  const [sets, setSets] = useState("");
-  const [reps, setReps] = useState("");
-  const [weight, setWeight] = useState("");
-  const [instructions, setInsturctions] = useState("");
+  const [distanceType, setDistanceType] = useState("M");
 
-  const handleSave = (id: string) => {
-    console.log(sets);
-    console.log(reps);
-    console.log(weight);
-    console.log(instructions);
-    console.log("Exercise Id: " + id);
+  const handleSave = async (
+    id: string,
+    e: React.FormEvent<HTMLFormElement>
+  ) => {
+    e.preventDefault();
+    const form = e.currentTarget;
 
-    setSets("");
-    setReps("");
-    setWeightType("");
-    setWeight("");
-    setInsturctions("");
-    setOpen(false);
+    const formData = new FormData(form);
+    formData.append("id", id);
+
+    const data = { props: { formData } };
+    toast.loading("Updating exercise...");
+    setActiveExerciseId(null);
+    const res = await editExercise(data);
+
+    if (res.success) {
+      toast.success("Exercise updated");
+      router.refresh();
+    } else {
+      toast.error("Error updating exercise");
+    }
   };
 
+  console.log(exercises);
+
   const handleCancel = () => {
-    setSets("");
-    setReps("");
-    setWeightType("");
-    setWeight("");
-    setInsturctions("");
-    setOpen(false);
+    setActiveExerciseId(null);
   };
   if (!exercises.length)
     return <p className="text-muted-foreground">No exercises for this day.</p>;
@@ -104,53 +112,54 @@ export default function DayEditor({
         )}
       </div>
 
-      {exercises.map((ex) => {
-        const exerciseObj = Array.isArray(ex.exercise)
-          ? ex.exercise[0]
-          : ex.exercise;
-        return (
-          <div key={ex.id}>
-            <ExerciseInfo
-              sets={ex.sets}
-              reps={ex.reps}
-              weight={ex.weight}
-              time={ex.time}
-              distance={ex.distance}
-              instructions={ex.instructions}
-              exercise={exerciseObj}
-            />
+      {/* EXERCISES  */}
+      {exercises.map((ex) => (
+        <div key={ex.id}>
+          <ExerciseInfo exercise={ex} />
 
-            {/* buttons */}
-            <div className="flex w-full gap-2 my-2">
-              <Button
-                onClick={() => console.log(ex)}
-                variant="destructive"
-                className="flex-1"
-                size="lg"
-              >
-                Delete
-              </Button>
-              <Dialog open={open} onOpenChange={setOpen}>
-                <DialogTrigger asChild>
-                  <Button className="flex-1" size="lg">
-                    Edit
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="sm:max-w-[425px]">
-                  <DialogHeader>
-                    <DialogTitle>Edit Exercise Info</DialogTitle>
-                    <DialogDescription>
-                      Sets, reps, weight, and instructions
-                    </DialogDescription>
-                  </DialogHeader>
-
+          {/* buttons */}
+          <div className="flex w-full gap-2 my-2">
+            <Button
+              onClick={() => console.log(ex)}
+              variant="destructive"
+              className="flex-1"
+              size="lg"
+            >
+              Delete
+            </Button>
+            <Dialog
+              open={activeExerciseId === ex.id}
+              onOpenChange={(isOpen) =>
+                setActiveExerciseId(isOpen ? ex.id : null)
+              }
+            >
+              <DialogTrigger asChild>
+                <Button className="flex-1" size="lg">
+                  Edit
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[425px]">
+                <DialogHeader>
+                  <DialogTitle>Edit Exercise Info</DialogTitle>
+                  <DialogDescription>
+                    Sets, reps, weight, and instructions
+                  </DialogDescription>
+                </DialogHeader>
+                <form
+                  onSubmit={(e) => {
+                    handleSave(ex.id, e);
+                  }}
+                >
                   <div className="grid gap-4">
                     {/* Sets */}
                     <Field>
                       <FieldLabel>Sets</FieldLabel>
-                      <Select onValueChange={setSets} defaultValue={sets}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select sets" />
+                      <Select defaultValue={ex.sets.toString()} name="sets">
+                        <SelectTrigger id="sets" name="sets">
+                          <SelectValue
+                            defaultValue={ex.sets}
+                            placeholder="Select sets"
+                          />
                         </SelectTrigger>
                         <SelectContent>
                           {[1, 2, 3, 4, 5].map((n) => (
@@ -165,15 +174,18 @@ export default function DayEditor({
                     {/* Reps */}
                     <Field>
                       <FieldLabel>Reps</FieldLabel>
-                      <Select onValueChange={setReps} defaultValue={reps}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select reps" />
+                      <Select defaultValue={ex.reps.toString()} name="reps">
+                        <SelectTrigger id="reps" name="reps">
+                          <SelectValue
+                            defaultValue={ex.reps}
+                            placeholder="Select reps"
+                          />
                         </SelectTrigger>
                         <SelectContent>
                           {Array.from({ length: 20 }, (_, i) => i + 1).map(
                             (n) => (
                               <SelectItem key={n} value={n.toString()}>
-                                {n}
+                                {n} {n === 1 ? "rep" : "reps"}
                               </SelectItem>
                             )
                           )}
@@ -189,10 +201,8 @@ export default function DayEditor({
                           type="number"
                           step="any"
                           placeholder="100"
-                          defaultValue={weight}
-                          onChange={(e) =>
-                            setWeight(e.target.value + weightType)
-                          }
+                          name="weightValue"
+                          id="weightValue"
                         />
                         <InputGroupAddon align={"inline-end"}>
                           <DropdownMenu>
@@ -216,10 +226,50 @@ export default function DayEditor({
                               >
                                 LBS
                               </DropdownMenuItem>
-                              <DropdownMenuItem
-                                onClick={() => setWeightType("None")}
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </InputGroupAddon>
+                      </InputGroup>
+                    </Field>
+
+                    {/* Time */}
+                    <Field>
+                      <FieldLabel>Time</FieldLabel>
+                      <Input placeholder="1 min 30s" name="time" id="time" />
+                    </Field>
+
+                    {/* Distance */}
+                    <Field>
+                      <FieldLabel>Distance</FieldLabel>
+                      <InputGroup>
+                        <InputGroupInput
+                          type="number"
+                          step="any"
+                          placeholder="15"
+                          name="distanceValue"
+                          id="distanceValue"
+                        />
+                        <InputGroupAddon align={"inline-end"}>
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <InputGroupButton
+                                variant="ghost"
+                                aria-label="Distance Type"
                               >
-                                None
+                                {distanceType}
+                                <ChevronDown />
+                              </InputGroupButton>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                              <DropdownMenuItem
+                                onClick={() => setDistanceType("M")}
+                              >
+                                Meters
+                              </DropdownMenuItem>
+                              <DropdownMenuItem
+                                onClick={() => setDistanceType("Feet")}
+                              >
+                                Feet
                               </DropdownMenuItem>
                             </DropdownMenuContent>
                           </DropdownMenu>
@@ -232,26 +282,39 @@ export default function DayEditor({
                       <FieldLabel>Instructions</FieldLabel>
                       <Textarea
                         placeholder="Example: Slow tempo, focus on form..."
-                        defaultValue={instructions}
-                        onChange={(e) => setInsturctions(e.target.value)}
+                        name="instructions"
+                        id="instructions"
+                        defaultValue={ex.instructions}
                       />
                     </Field>
+
+                    <input type="hidden" name="weightType" value={weightType} />
+                    <input
+                      type="hidden"
+                      name="distanceType"
+                      value={distanceType}
+                    />
                   </div>
 
-                  <DialogFooter>
+                  <DialogFooter className="mt-5">
                     <DialogClose asChild>
                       <Button variant="destructive" onClick={handleCancel}>
                         Cancel
                       </Button>
                     </DialogClose>
-                    <Button onClick={() => handleSave(ex.id)}>Save</Button>
+                    <Button type="submit">Save</Button>
                   </DialogFooter>
-                </DialogContent>
-              </Dialog>
-            </div>
+                </form>
+              </DialogContent>
+            </Dialog>
           </div>
-        );
-      })}
+        </div>
+      ))}
+
+      {/* Buttons */}
+      <div>
+        <Button>AAA</Button>
+      </div>
     </div>
   );
 }
