@@ -56,7 +56,6 @@ export default async function SetupProgram({
           day={i + 1}
           exercises={exercises}
           programId={programId}
-          userId={userId}
           daysSet={daysSet}
         />
       ))}
