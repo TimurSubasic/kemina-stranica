@@ -1,6 +1,6 @@
 "use client";
 
-import React, { startTransition, useState } from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/dialog";
 import { CirclePlus } from "lucide-react";
 import ExerciseRow from "./exercise-row";
-import { addExercisesToProgram, changeToActive } from "./actions";
+import { addExercisesToProgram } from "./actions";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
@@ -39,7 +39,6 @@ interface DaySetupProps {
   exercises: ExerciseProps[];
   day: number;
   programId: string;
-  userId: string;
   daysSet: number[];
 }
 
@@ -47,7 +46,6 @@ export default function DaySetup({
   exercises,
   day,
   programId,
-  userId,
   daysSet,
 }: DaySetupProps) {
   const [selectedExercises, setSelectedExercises] = useState<ExerciseProps[]>(
