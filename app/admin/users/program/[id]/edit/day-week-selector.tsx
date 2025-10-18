@@ -37,16 +37,23 @@ export interface CompletedProps {
   completed: boolean;
 }
 
+export interface AllExercisesProps {
+  id: string;
+  name: string;
+}
+
 export default function DayWeekSelector({
   programId,
   totalDays,
   exercises,
   completed,
+  allExercises,
 }: {
   programId: string;
   totalDays: number;
   exercises: ProgramExerciseProps[];
   completed: CompletedProps[];
+  allExercises: AllExercisesProps[];
 }) {
   const nextDay = completed.find((d) => !d.completed);
 
@@ -103,6 +110,7 @@ export default function DayWeekSelector({
         day={day}
         exercises={filteredExercises}
         completed={isCompleted || false}
+        allExercises={allExercises}
       />
     </div>
   );

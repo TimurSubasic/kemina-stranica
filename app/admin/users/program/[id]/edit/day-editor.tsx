@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { ProgramExerciseProps } from "./day-week-selector";
+import { AllExercisesProps, ProgramExerciseProps } from "./day-week-selector";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -39,6 +39,7 @@ import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { deleteExercise, editExercise } from "./actions";
+import AddExercise from "./add-exercise";
 
 export default function DayEditor({
   programId,
@@ -46,12 +47,14 @@ export default function DayEditor({
   week,
   exercises,
   completed,
+  allExercises,
 }: {
   programId: string;
   day: number;
   week: number;
   exercises: ProgramExerciseProps[];
   completed: boolean;
+  allExercises: AllExercisesProps[];
 }) {
   //! so not unused
   console.log("Program Id: " + programId);
@@ -109,9 +112,13 @@ export default function DayEditor({
       <div>
         <p className="text-muted-foreground mb-5">No exercises for this day.</p>
 
-        <Button variant="outline" className="w-full" size="lg">
-          Add Exercise
-        </Button>
+        <AddExercise
+          exercises={allExercises}
+          programId={programId}
+          week={week}
+          day={day}
+          order={exercises.length + 1}
+        />
       </div>
     );
 
@@ -339,9 +346,13 @@ export default function DayEditor({
         <Button variant="outline" className="flex-1" size="lg">
           Reorder
         </Button>
-        <Button variant="outline" className="flex-1" size="lg">
-          Add Exercise
-        </Button>
+        <AddExercise
+          exercises={allExercises}
+          programId={programId}
+          week={week}
+          day={day}
+          order={exercises.length + 1}
+        />
       </div>
       <div className="my-10 border border-destructive rounded" />
       <Button variant="destructive" size="lg" className="w-full">

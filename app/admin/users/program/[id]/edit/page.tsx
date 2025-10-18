@@ -114,6 +114,17 @@ export default async function EditProgram({
     return null;
     //? Maybe redirect back
   }
+  const { data: allExercises, error: allExercisesError } = await supabase.from(
+    "exercises"
+  ).select(`
+      id,
+      name
+      `);
+
+  if (!allExercises || allExercisesError) {
+    console.log(allExercisesError);
+    return null;
+  }
 
   return (
     <DayWeekSelector
@@ -121,6 +132,7 @@ export default async function EditProgram({
       totalDays={program.days}
       exercises={normalizedExercises}
       completed={completed || []}
+      allExercises={allExercises}
     />
   );
 }

@@ -62,3 +62,38 @@ export async function deleteExercise(id: string) {
     success: true,
   };
 }
+
+export async function addExercise({
+  exerciseId,
+  programId,
+  week,
+  day,
+  order,
+}: {
+  exerciseId: string;
+  programId: string;
+  week: number;
+  day: number;
+  order: number;
+}) {
+  const supabase = await createClient();
+
+  const { error } = await supabase.from("program-exercises").insert({
+    exercise_id: exerciseId,
+    program_id: programId,
+    week,
+    day,
+    order,
+  });
+
+  if (error) {
+    console.error(error);
+    return {
+      success: false,
+    };
+  }
+
+  return {
+    success: true,
+  };
+}
