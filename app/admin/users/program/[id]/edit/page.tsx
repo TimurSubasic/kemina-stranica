@@ -133,6 +133,7 @@ export default async function EditProgram({
       exercises={normalizedExercises}
       completed={completed || []}
       allExercises={allExercises}
+      user={user}
     />
   );
 }

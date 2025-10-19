@@ -10,7 +10,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { CirclePlus } from "lucide-react";
 import { addExercise } from "./actions";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
@@ -80,7 +79,7 @@ export default function AddExercise({
         </div>
         <DialogFooter>
           <DialogClose asChild>
-            <Button variant="destructive">Close</Button>
+            <Button variant="destructive">Cancel</Button>
           </DialogClose>
         </DialogFooter>
       </DialogContent>

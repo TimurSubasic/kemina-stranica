@@ -40,6 +40,7 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { deleteExercise, editExercise } from "./actions";
 import AddExercise from "./add-exercise";
+import Reorder from "./reorder";
 
 export default function DayEditor({
   programId,
@@ -56,9 +57,6 @@ export default function DayEditor({
   completed: boolean;
   allExercises: AllExercisesProps[];
 }) {
-  //! so not unused
-  console.log("Program Id: " + programId);
-
   const router = useRouter();
 
   const [activeExerciseId, setActiveExerciseId] = useState<string | null>(null);
@@ -343,9 +341,7 @@ export default function DayEditor({
       {/* Buttons */}
       <div className="my-10 border border-primary rounded" />
       <div className="flex flex-row gap-5 w-full">
-        <Button variant="outline" className="flex-1" size="lg">
-          Reorder
-        </Button>
+        <Reorder exercises={exercises} />
         <AddExercise
           exercises={allExercises}
           programId={programId}
@@ -354,10 +350,6 @@ export default function DayEditor({
           order={exercises.length + 1}
         />
       </div>
-      <div className="my-10 border border-destructive rounded" />
-      <Button variant="destructive" size="lg" className="w-full">
-        Delete Program
-      </Button>
     </div>
   );
 }

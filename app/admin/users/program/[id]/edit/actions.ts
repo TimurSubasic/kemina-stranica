@@ -97,3 +97,70 @@ export async function addExercise({
     success: true,
   };
 }
+
+export async function reorderExercises(
+  exercises: { id: string; order: number }[]
+) {
+  const supabase = await createClient();
+
+  const results: { success: boolean }[] = [];
+
+  for (const ex of exercises) {
+    const { error } = await supabase
+      .from("program-exercises")
+      .update({
+        order: ex.order,
+      })
+      .eq("id", ex.id);
+
+    if (error) {
+      results.push({ success: false });
+    } else results.push({ success: true });
+  }
+
+  const hasError = results.some((r) => !r.success);
+
+  return {
+    success: !hasError,
+  };
+}
+
+export async function deleteProgram({
+  userId,
+  programId,
+}: {
+  userId: string;
+  programId: string;
+}) {
+  const supabase = await createClient();
+
+  const { error: userError } = await supabase
+    .from("users")
+    .update({ role: "inactive" })
+    .eq("id", userId);
+
+  if (userError) {
+    console.error(userError);
+    return {
+      success: false,
+      message: "Failed to find user",
+    };
+  }
+
+  const { error: programError } = await supabase
+    .from("user-programs")
+    .delete()
+    .eq("id", programId);
+
+  if (programError) {
+    console.error(programError);
+    return {
+      success: false,
+      message: "Failed to delete program",
+    };
+  }
+
+  return {
+    success: true,
+  };
+}
