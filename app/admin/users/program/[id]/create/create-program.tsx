@@ -68,10 +68,10 @@ export default function CreateProgram({ userId }: { userId: string }) {
   };
 
   return (
-    <div className=" flex items-center justify-center bg-background p-4">
+    <div className="flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         <form onSubmit={handleCreate}>
-          <FieldSet className="my-5">
+          <FieldSet>
             <FieldLegend>Program Configuration</FieldLegend>
             <FieldDescription>Set up your program</FieldDescription>
             <FieldGroup>
@@ -112,7 +112,7 @@ export default function CreateProgram({ userId }: { userId: string }) {
           {error && <p className="text-sm text-red-500 mb-2">{error}</p>}
 
           <Button
-            className="w-full"
+            className="w-full my-5"
             size="lg"
             type="submit"
             disabled={isLoading}

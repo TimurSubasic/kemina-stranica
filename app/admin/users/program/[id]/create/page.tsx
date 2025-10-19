@@ -25,7 +25,7 @@ export default async function ProgramPage({
 
   const { data: user, error: userError } = await supabase
     .from("users")
-    .select("role")
+    .select()
     .eq("id", userId)
     .single();
 
@@ -39,16 +39,23 @@ export default async function ProgramPage({
   } else if (!program) {
     return (
       <div>
-        {" "}
+        <div className="text-lg font-semibold max-w-md mx-auto mt-5">
+          {user.name}
+        </div>
         <CreateProgram userId={userId} />{" "}
       </div>
     );
   } else
     return (
-      <SetupProgram
-        days={program.days}
-        programId={program.id}
-        userId={userId}
-      />
+      <div>
+        <div className="text-lg font-semibold max-w-4xl mx-auto mt-5">
+          {user.name}
+        </div>
+        <SetupProgram
+          days={program.days}
+          programId={program.id}
+          userId={userId}
+        />
+      </div>
     );
 }

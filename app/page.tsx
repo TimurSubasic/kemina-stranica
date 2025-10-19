@@ -25,7 +25,11 @@ export default async function Home() {
     .single();
   if (userError) {
     console.log("Error fetching user data:", userError.message);
-    return null;
+    return (
+      <div className="text-center my-10 text-lg font-semibold">
+        Error fetching user data!
+      </div>
+    );
   }
 
   return (

@@ -1,11 +1,10 @@
 import {
   Dumbbell,
   Home,
-  // ShieldUser,
   Users,
   User,
   SquarePen,
-  UserCog,
+  Cog,
   LayoutDashboard,
   Trash2,
 } from "lucide-react";
@@ -31,11 +30,6 @@ const adminItems = [
     url: "/",
     icon: Home,
   },
-  // {
-  //   title: "Admin",
-  //   url: "/admin",
-  //   icon: ShieldUser,
-  // },
   {
     title: "Dashboard",
     url: "/admin/dashboard",
@@ -61,6 +55,11 @@ const adminItems = [
     url: "/admin/exercises/delete",
     icon: Trash2,
   },
+  {
+    title: "Settings",
+    url: "/settings",
+    icon: Cog,
+  },
 ];
 
 const userItems = [
@@ -80,9 +79,9 @@ const userItems = [
     icon: LayoutDashboard,
   },
   {
-    title: "Profile",
-    url: "/user/profile",
-    icon: UserCog,
+    title: "Settings",
+    url: "/settings",
+    icon: Cog,
   },
 ];
 
