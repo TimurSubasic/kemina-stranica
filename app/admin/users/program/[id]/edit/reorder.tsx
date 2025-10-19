@@ -44,7 +44,7 @@ export default function Reorder({
     if (open) {
       setLocalExercises(exercises);
     }
-  }, [open]);
+  }, [open, exercises]);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
