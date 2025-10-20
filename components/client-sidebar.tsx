@@ -114,10 +114,14 @@ export default function ClientSidebar({ isAdmin }: { isAdmin: boolean }) {
         : userItems.map((item) => (
             <SidebarMenuItem key={item.title}>
               <SidebarMenuButton asChild>
-                <a href={item.url}>
+                <Button
+                  onClick={() => handleClick(item.url)}
+                  variant="ghost"
+                  className="justify-start"
+                >
                   <item.icon />
                   <span>{item.title}</span>
-                </a>
+                </Button>
               </SidebarMenuButton>
             </SidebarMenuItem>
           ))}
