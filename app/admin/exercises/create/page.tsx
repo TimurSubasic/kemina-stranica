@@ -97,7 +97,11 @@ export default function CreateExercise() {
 
         {error && <p className="text-red-500">{error}</p>}
 
-        <Button size="lg" type="submit" disabled={isLoading}>
+        <Button
+          size="lg"
+          type="submit"
+          disabled={true /*isLoading || can't push files via vercel*/}
+        >
           {isLoading ? <Spinner className="size-4" /> : "Create"}
         </Button>
       </form>

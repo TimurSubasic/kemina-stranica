@@ -30,7 +30,7 @@ export default async function UserLayout({
   }
 
   return (
-    <main className="max-w-6xl mx-auto mt-5 flex-1">
+    <main className="max-w-6xl mx-auto flex-1">
       <Navbar />
       {children}
     </main>

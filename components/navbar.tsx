@@ -4,7 +4,7 @@ import { AuthButton } from "./auth-button";
 
 export default function Navbar() {
   return (
-    <nav className="sticky top-0 w-full flex justify-center border-b border-b-foreground/10 h-16 bg-background">
+    <nav className="sticky top-0 w-full flex justify-center border-b border-b-foreground/10 h-16 bg-background mt-5">
       <div className="w-full max-w-6xl flex justify-between items-center py-3 px-5 text-sm">
         <Link className="font-semibold" href={"/"}>
           Train with Kema
