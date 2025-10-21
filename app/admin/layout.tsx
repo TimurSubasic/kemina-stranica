@@ -15,17 +15,7 @@ export default async function AdminLayout({
     return redirect("/auth/login");
   }
 
-  const { data: userData, error: userError } = await supabase
-    .from("users")
-    .select("*")
-    .eq("id", claims?.claims.sub)
-    .single();
-  if (userError) {
-    console.log("Error fetching user data:", userError.message);
-    return redirect("/");
-  }
-
-  if (!userData || userData.role !== "admin") {
+  if (!claims.claims.user_metadata.is_admin) {
     return redirect("/");
   }
 

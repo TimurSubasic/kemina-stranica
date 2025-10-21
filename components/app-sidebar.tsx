@@ -15,18 +15,8 @@ export async function AppSidebar({
 }: React.ComponentProps<typeof Sidebar>) {
   const supabase = await createClient();
 
-  const { data, error } = await supabase.auth.getClaims();
-  if (error || !data?.claims) {
-    return null;
-  }
-  const { data: userData, error: userError } = await supabase
-    .from("users")
-    .select("*")
-    .eq("id", data.claims.sub)
-    .single();
-
-  if (userError || !userData) {
-    console.log("Error fetching user data:", userError?.message);
+  const { data: claims, error } = await supabase.auth.getClaims();
+  if (error || !claims?.claims) {
     return null;
   }
 
@@ -37,7 +27,7 @@ export async function AppSidebar({
           <SidebarGroupLabel>Menu</SidebarGroupLabel>
           <SidebarGroupContent>
             {/* client sidebar here */}
-            {userData.role === "admin" ? (
+            {claims.claims.user_metadata.is_admin ? (
               <ClientSidebar isAdmin={true} />
             ) : (
               <ClientSidebar isAdmin={false} />

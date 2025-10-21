@@ -18,6 +18,8 @@ export default async function Home() {
     );
   }
 
+  console.log(claims.claims.user_metadata.is_admin);
+
   const { data: userData, error: userError } = await supabase
     .from("users")
     .select("*")
