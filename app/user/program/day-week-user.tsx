@@ -8,7 +8,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useRouter } from "next/navigation";
 import SingleDay from "./single-day";
 
 export interface ProgramExerciseProps {
