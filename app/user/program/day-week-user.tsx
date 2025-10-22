@@ -68,7 +68,7 @@ export default function DayWeekUser({
     console.log("Cant find day");
     return (
       <div className="mt-10 text-center">
-        Can't find this day, please reload
+        Can&apos;t find this day, please reload
       </div>
     );
   }
