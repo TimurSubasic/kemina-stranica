@@ -20,7 +20,7 @@ interface ExerciseInfoProps {
 
 export default function ExerciseInfo({ exercise }: ExerciseInfoProps) {
   return (
-    <div className="border p-2 rounded-md space-y-5">
+    <div className="border p-4 rounded-md space-y-5 shadow-lg ">
       <ExerciseItem exercise={exercise.exercise} />
       <div className="grid grid-cols-2  gap-10 text-lg font-semibold text-center">
         <div className="flex flex-col items-center justify-center">

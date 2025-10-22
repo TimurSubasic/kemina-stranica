@@ -4,7 +4,6 @@ import {
   Dumbbell,
   Home,
   Users,
-  User,
   SquarePen,
   Cog,
   LayoutDashboard,
@@ -66,14 +65,14 @@ const userItems = [
     icon: Home,
   },
   {
-    title: "User",
-    url: "/user",
-    icon: User,
-  },
-  {
     title: "Dashboard",
     url: "/user/dashboard",
     icon: LayoutDashboard,
+  },
+  {
+    title: "Program",
+    url: "/user/program",
+    icon: Dumbbell,
   },
   {
     title: "Settings",

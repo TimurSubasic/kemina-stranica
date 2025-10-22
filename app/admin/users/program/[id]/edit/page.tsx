@@ -60,7 +60,7 @@ export default async function EditProgram({
   if (!exercises || exercisesError) {
     console.log(exercisesError);
     return null;
-    //? maybe redirect back but not now
+    //TODO: maybe redirect back but not now
   }
 
   type RawExercise = {
@@ -112,7 +112,7 @@ export default async function EditProgram({
   if (!completed || completedError) {
     console.log(completedError);
     return null;
-    //? Maybe redirect back
+    //?TODO: Maybe redirect back
   }
   const { data: allExercises, error: allExercisesError } = await supabase.from(
     "exercises"
