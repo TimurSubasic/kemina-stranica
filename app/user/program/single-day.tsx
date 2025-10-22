@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import { CompletedProps, ProgramExerciseProps } from "./day-week-user";
 import { Button } from "@/components/ui/button";
 import { BadgeCheck, BadgeX } from "lucide-react";

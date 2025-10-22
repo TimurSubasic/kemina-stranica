@@ -57,9 +57,6 @@ export default function DayWeekUser({
   const [week, setWeek] = useState(nextDay?.week || 1);
   const [day, setDay] = useState(nextDay?.day || 1);
 
-  //! un used still
-  const router = useRouter();
-
   const filteredExercises = exercises.filter(
     (ex) => ex.week === week && ex.day === day
   );
