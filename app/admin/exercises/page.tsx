@@ -6,18 +6,15 @@ import React from "react";
 
 export default async function Exercises() {
   const supabase = await createClient();
-  const { data: exercises } = await supabase
+  const { data: exercises, error } = await supabase
     .from("exercises")
     .select("*")
     .order("name", { ascending: true });
 
-  if (!exercises)
-    return (
-      <div className="flex-1 items-center justify-center">
-        <Spinner className="size-10" />
-      </div>
-    );
-  else
+  if (!exercises || error) {
+    console.error(error);
+    return null;
+  } else
     return (
       <div className="p-5 mt-5">
         <div className="flex flex-col gap-5 items-center justify-between mb-5 sm:flex-row">
@@ -34,9 +31,15 @@ export default async function Exercises() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {exercises.map((exercise) => (
-            <ExerciseItem key={exercise.id} exercise={exercise} />
-          ))}
+          {exercises.length === 0 ? (
+            <div className="mt-5 text-center text-lg font-semibold">
+              No Exercises Found
+            </div>
+          ) : (
+            exercises.map((exercise) => (
+              <ExerciseItem key={exercise.id} exercise={exercise} />
+            ))
+          )}
         </div>
       </div>
     );

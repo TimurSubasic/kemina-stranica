@@ -77,6 +77,33 @@ export default function ExerciseRow({
     setOpen(false);
   };
 
+  const isNumberKey = (
+    evt: React.KeyboardEvent<HTMLInputElement>,
+    element: HTMLInputElement
+  ) => {
+    const allowedKeys = [
+      "Backspace",
+      "Delete",
+      "ArrowLeft",
+      "ArrowRight",
+      "Tab",
+    ];
+
+    if (allowedKeys.includes(evt.key)) return; // allow control keys
+
+    // Allow digits
+    if (evt.key >= "0" && evt.key <= "9") return;
+
+    // Allow one dot
+    if (evt.key === "." && !element.value.includes(".")) return;
+
+    // Allow one comma
+    if (evt.key === "," && !element.value.includes(",")) return;
+
+    // Block all other keys
+    evt.preventDefault();
+  };
+
   return (
     <div className="flex gap-5 items-center justify-center border p-3 rounded-md">
       <div className="flex-1">
@@ -146,7 +173,7 @@ export default function ExerciseRow({
                 <InputGroup>
                   <InputGroupInput
                     type="number"
-                    step="any"
+                    onKeyDown={(e) => isNumberKey(e, e.currentTarget)}
                     placeholder="100"
                     defaultValue={value.weight ? value.weight.toString() : ""}
                     onChange={(e) => onChange({ weight: e.target.value })}
@@ -191,7 +218,7 @@ export default function ExerciseRow({
                 <InputGroup>
                   <InputGroupInput
                     type="number"
-                    step="any"
+                    onKeyDown={(e) => isNumberKey(e, e.currentTarget)}
                     placeholder="15"
                     defaultValue={
                       value.distance ? value.distance.toString() : ""

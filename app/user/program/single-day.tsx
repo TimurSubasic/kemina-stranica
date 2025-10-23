@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { CompletedProps, ProgramExerciseProps } from "./day-week-user";
 import { Button } from "@/components/ui/button";
 import { BadgeCheck, BadgeX } from "lucide-react";
@@ -22,9 +22,13 @@ export default function SingleDay({
 }) {
   const router = useRouter();
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const handleChange = async () => {
     toast.loading("Saving day...");
+    setIsLoading(true);
     const res = await changeCompleted(completed);
+    setIsLoading(false);
 
     toast.dismiss();
 
@@ -73,6 +77,7 @@ export default function SingleDay({
       <div className="my-10 border-4 border-secondary rounded" />
       {completed.completed ? (
         <Button
+          disabled={isLoading}
           className="w-full"
           size="lg"
           variant="outline"
@@ -81,7 +86,12 @@ export default function SingleDay({
           Uncomplete Day
         </Button>
       ) : (
-        <Button className="w-full" size="lg" onClick={handleChange}>
+        <Button
+          disabled={isLoading}
+          className="w-full"
+          size="lg"
+          onClick={handleChange}
+        >
           Complete Day
         </Button>
       )}
