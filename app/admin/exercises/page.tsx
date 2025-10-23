@@ -1,6 +1,5 @@
 import ExerciseItem from "@/components/exercise-item";
 import { Button } from "@/components/ui/button";
-import { Spinner } from "@/components/ui/spinner";
 import { createClient } from "@/lib/supabase/server";
 import React from "react";
 
