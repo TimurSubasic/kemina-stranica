@@ -6,7 +6,12 @@ import {
   FieldLegend,
   FieldSet,
 } from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupInput,
+} from "@/components/ui/input-group";
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import React from "react";
@@ -34,7 +39,7 @@ export default async function Settings() {
   return (
     <div>
       <Navbar />
-      <div className="max-w-md mx-auto w-full mt-10 mb-5">
+      <div className="max-w-md mx-auto w-full mt-16 mb-5 ">
         <form>
           <FieldSet>
             <FieldLegend>User Settings</FieldLegend>
@@ -42,17 +47,35 @@ export default async function Settings() {
             <FieldGroup>
               <Field>
                 <FieldLabel>Change Name</FieldLabel>
-                <Input id="name" name="name" placeholder={user.name} />
+                <InputGroup>
+                  <InputGroupInput
+                    id="name"
+                    name="name"
+                    placeholder={user.name}
+                  />
+                  <InputGroupAddon align="inline-end">
+                    <InputGroupButton variant="secondary">
+                      Save
+                    </InputGroupButton>
+                  </InputGroupAddon>
+                </InputGroup>
               </Field>
 
               <Field>
                 <FieldLabel>Change Email</FieldLabel>
-                <Input
-                  id="name"
-                  name="name"
-                  type="email"
-                  placeholder={user.email}
-                />
+                <InputGroup>
+                  <InputGroupInput
+                    id="name"
+                    name="name"
+                    type="email"
+                    placeholder={user.email}
+                  />
+                  <InputGroupAddon align="inline-end">
+                    <InputGroupButton variant="secondary">
+                      Save
+                    </InputGroupButton>
+                  </InputGroupAddon>
+                </InputGroup>
               </Field>
             </FieldGroup>
           </FieldSet>

@@ -65,11 +65,6 @@ const userItems = [
     icon: Home,
   },
   {
-    title: "Dashboard",
-    url: "/user/dashboard",
-    icon: LayoutDashboard,
-  },
-  {
     title: "Program",
     url: "/user/program",
     icon: Dumbbell,
@@ -94,7 +89,7 @@ export default function ClientSidebar({ isAdmin }: { isAdmin: boolean }) {
   };
 
   return (
-    <SidebarMenu>
+    <SidebarMenu className="mt-2">
       {isAdmin
         ? adminItems.map((item) => (
             <SidebarMenuItem key={item.title}>
