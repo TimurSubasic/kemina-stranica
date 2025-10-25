@@ -1,8 +1,9 @@
 "use client";
 import { useRouter } from "next/navigation";
 import React from "react";
-import { Button } from "../../../components/ui/button";
+
 import { ArrowBigLeftDash } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface ExerciseDetailsProps {
   exercise: {
