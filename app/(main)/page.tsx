@@ -1,7 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
 import NotAuthenticated from "@/components/not-authenticated";
-import Navbar from "@/components/navbar";
-import { Spinner } from "@/components/ui/spinner";
 
 export default async function Home() {
   const supabase = await createClient();
@@ -34,12 +32,10 @@ export default async function Home() {
   }
 
   return (
-    <main className="min-h-screen flex flex-col items-center">
-      <div className="flex-1 w-full max-w-6xl mx-auto flex flex-col gap-20 items-center">
-        <div>
-          <p>Welcome, {userData.name}</p>
-        </div>
+    <div className="max-w-6xl mx-auto p-5">
+      <div>
+        <p>Welcome, {userData.name}</p>
       </div>
-    </main>
+    </div>
   );
 }
