@@ -3,7 +3,7 @@ import React from "react";
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 
-export default async function UserLayout({
+export default async function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -15,14 +15,9 @@ export default async function UserLayout({
     return redirect("/auth/login");
   }
 
-  if (claims.claims.user_metadata.is_admin) {
+  if (!claims.claims.user_metadata.is_admin) {
     return redirect("/");
   }
 
-  return (
-    <main className="max-w-6xl mx-auto flex-1">
-      <Navbar />
-      {children}
-    </main>
-  );
+  return <main className="max-w-6xl mx-auto flex-1">{children}</main>;
 }

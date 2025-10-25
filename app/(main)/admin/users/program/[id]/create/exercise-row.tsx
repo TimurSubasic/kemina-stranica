@@ -97,9 +97,6 @@ export default function ExerciseRow({
     // Allow one dot
     if (evt.key === "." && !element.value.includes(".")) return;
 
-    // Allow one comma
-    if (evt.key === "," && !element.value.includes(",")) return;
-
     // Block all other keys
     evt.preventDefault();
   };
@@ -173,6 +170,7 @@ export default function ExerciseRow({
                 <InputGroup>
                   <InputGroupInput
                     type="number"
+                    step="any"
                     onKeyDown={(e) => isNumberKey(e, e.currentTarget)}
                     placeholder="100"
                     defaultValue={value.weight ? value.weight.toString() : ""}
@@ -218,6 +216,7 @@ export default function ExerciseRow({
                 <InputGroup>
                   <InputGroupInput
                     type="number"
+                    step="any"
                     onKeyDown={(e) => isNumberKey(e, e.currentTarget)}
                     placeholder="15"
                     defaultValue={

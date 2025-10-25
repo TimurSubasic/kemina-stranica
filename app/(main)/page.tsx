@@ -11,7 +11,6 @@ export default async function Home() {
   if (claimsError || !claims?.claims) {
     return (
       <div className="min-h-screen flex flex-col items-center gap-10">
-        <Navbar />
         {/* !! Landing */}
         <NotAuthenticated />
       </div>
@@ -36,18 +35,10 @@ export default async function Home() {
 
   return (
     <main className="min-h-screen flex flex-col items-center">
-      <div className="flex-1 w-full flex flex-col gap-20 items-center">
-        <Navbar />
-
-        {userData ? (
-          <div>
-            <p>Welcome, {userData.name}</p>
-          </div>
-        ) : (
-          <div>
-            <Spinner />
-          </div>
-        )}
+      <div className="flex-1 w-full max-w-6xl mx-auto flex flex-col gap-20 items-center">
+        <div>
+          <p>Welcome, {userData.name}</p>
+        </div>
       </div>
     </main>
   );

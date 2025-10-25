@@ -121,9 +121,6 @@ export default function EditExercise({
     // Allow one dot
     if (evt.key === "." && !element.value.includes(".")) return;
 
-    // Allow one comma
-    if (evt.key === "," && !element.value.includes(",")) return;
-
     // Block all other keys
     evt.preventDefault();
   };
@@ -210,6 +207,7 @@ export default function EditExercise({
                     <InputGroupInput
                       defaultValue={exercise.weight?.split(" ")[0]}
                       type="number"
+                      step="any"
                       onKeyDown={(e) => isNumberKey(e, e.currentTarget)}
                       placeholder="100"
                       name="weightValue"
@@ -259,6 +257,7 @@ export default function EditExercise({
                     <InputGroupInput
                       defaultValue={exercise.distance?.split(" ")[0]}
                       type="number"
+                      step="any"
                       onKeyDown={(e) => isNumberKey(e, e.currentTarget)}
                       placeholder="15"
                       name="distanceValue"

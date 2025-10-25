@@ -38,7 +38,6 @@ export default async function Settings() {
 
   return (
     <div>
-      <Navbar />
       <div className="max-w-md mx-auto w-full mt-16 mb-5 ">
         <form>
           <FieldSet>
