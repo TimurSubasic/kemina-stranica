@@ -9,10 +9,11 @@ import {
   InputGroupAddon,
   InputGroupTextarea,
 } from "@/components/ui/input-group";
-import { Label } from "@radix-ui/react-dropdown-menu";
+
 import { ArrowBigLeftDash, FolderPen, Info, Video } from "lucide-react";
 import { createExercise } from "./actions";
 import { toast } from "sonner";
+import { Label } from "@/components/ui/label";
 
 export default function CreateExercise() {
   const [isLoading, setIsLoading] = useState(false);
