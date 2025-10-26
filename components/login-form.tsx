@@ -84,7 +84,6 @@ export function LoginForm({
                 </div>
                 <InputGroup>
                   <InputGroupInput
-                    minLength={6}
                     id="password"
                     type={hidden ? "password" : "text"}
                     required

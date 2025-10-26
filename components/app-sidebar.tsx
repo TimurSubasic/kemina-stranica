@@ -27,7 +27,7 @@ export async function AppSidebar({
           <SidebarGroupLabel>Menu</SidebarGroupLabel>
           <SidebarGroupContent>
             {/* client sidebar here */}
-            {claims.claims.user_metadata.is_admin ? (
+            {claims.claims.app_metadata.is_admin ? (
               <ClientSidebar isAdmin={true} />
             ) : (
               <ClientSidebar isAdmin={false} />

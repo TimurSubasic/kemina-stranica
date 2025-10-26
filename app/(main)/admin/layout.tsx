@@ -14,7 +14,7 @@ export default async function AdminLayout({
     return redirect("/auth/login");
   }
 
-  if (!claims.claims.user_metadata.is_admin) {
+  if (!claims.claims.app_metadata.is_admin) {
     return redirect("/");
   }
 

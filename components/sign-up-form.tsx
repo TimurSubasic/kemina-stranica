@@ -32,11 +32,31 @@ export function SignUpForm({
 
   const [hidden, setHidden] = useState(true);
 
+  const passwordCheck = (pass: string) => {
+    return (
+      /[A-Z]/.test(pass) && // uppercase
+      /[a-z]/.test(pass) && // lowercase
+      /\d/.test(pass) // digit
+    );
+  };
+
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
     const supabase = createClient();
     setIsLoading(true);
     setError(null);
+
+    if (password.length < 6) {
+      setError("Password must be at least 6 characters");
+      setIsLoading(false);
+      return;
+    }
+
+    if (!passwordCheck(password)) {
+      setError("Password must contain uppercase, lowercase and number");
+      setIsLoading(false);
+      return;
+    }
 
     if (password !== repeatPassword) {
       setError("Passwords do not match");
@@ -105,7 +125,6 @@ export function SignUpForm({
                 </div>
                 <InputGroup>
                   <InputGroupInput
-                    minLength={6}
                     id="password"
                     type={hidden ? "password" : "text"}
                     required
