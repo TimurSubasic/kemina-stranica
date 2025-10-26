@@ -9,6 +9,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import SingleDay from "./single-day";
+import { Button } from "@/components/ui/button";
+import { ArrowBigLeftDash, ArrowBigRightDash } from "lucide-react";
 
 export interface ProgramExerciseProps {
   id: string;
@@ -72,6 +74,29 @@ export default function DayWeekUser({
       </div>
     );
   }
+  const totalDays = program.days;
+
+  const handleBack = () => {
+    if (day !== 1) {
+      const newDay = day - 1;
+      setDay(newDay);
+    } else if (week !== 1) {
+      const newWeek = week - 1;
+      setWeek(newWeek);
+      setDay(totalDays);
+    }
+  };
+
+  const handleNext = () => {
+    if (day !== totalDays) {
+      const newDay = day + 1;
+      setDay(newDay);
+    } else if (week !== 4) {
+      const newWeek = week + 1;
+      setWeek(newWeek);
+      setDay(1);
+    }
+  };
 
   return (
     <div className="space-y-4 mb-5 p-5">
@@ -79,7 +104,7 @@ export default function DayWeekUser({
       <div className="flex gap-4">
         <Select
           onValueChange={(v) => setWeek(Number(v))}
-          defaultValue={week.toString()}
+          value={week.toString()}
         >
           <SelectTrigger className="w-[120px]">
             <SelectValue placeholder="Week" />
@@ -93,10 +118,7 @@ export default function DayWeekUser({
           </SelectContent>
         </Select>
 
-        <Select
-          onValueChange={(v) => setDay(Number(v))}
-          defaultValue={day.toString()}
-        >
+        <Select onValueChange={(v) => setDay(Number(v))} value={day.toString()}>
           <SelectTrigger className="w-[120px]">
             <SelectValue placeholder="Day" />
           </SelectTrigger>
@@ -108,6 +130,23 @@ export default function DayWeekUser({
             ))}
           </SelectContent>
         </Select>
+      </div>
+
+      <div className="flex w-full items-center justify-between">
+        <h2>
+          Week {week}, Day {day}
+        </h2>
+        <div className="flex gap-5">
+          <Button onClick={handleBack} variant="outline">
+            <ArrowBigLeftDash className="size-6" />
+            Back
+          </Button>
+
+          <Button onClick={handleNext}>
+            Next
+            <ArrowBigRightDash className="size-6" />
+          </Button>
+        </div>
       </div>
 
       <SingleDay

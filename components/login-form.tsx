@@ -14,6 +14,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { useState } from "react";
+import { InputGroup, InputGroupAddon, InputGroupInput } from "./ui/input-group";
+import { Eye, EyeOff } from "lucide-react";
 
 export function LoginForm({
   className,
@@ -23,6 +25,8 @@ export function LoginForm({
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+
+  const [hidden, setHidden] = useState(true);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -78,13 +82,26 @@ export function LoginForm({
                     Forgot your password?
                   </Link>
                 </div>
-                <Input
-                  id="password"
-                  type="password"
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
+                <InputGroup>
+                  <InputGroupInput
+                    minLength={6}
+                    id="password"
+                    type={hidden ? "password" : "text"}
+                    required
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                  <InputGroupAddon align="inline-end">
+                    <Button
+                      size="sm"
+                      type="button"
+                      onClick={() => setHidden(!hidden)}
+                      variant="ghost"
+                    >
+                      {hidden ? <EyeOff /> : <Eye />}
+                    </Button>
+                  </InputGroupAddon>
+                </InputGroup>
               </div>
               {error && <p className="text-sm text-red-500">{error}</p>}
               <Button type="submit" className="w-full" disabled={isLoading}>

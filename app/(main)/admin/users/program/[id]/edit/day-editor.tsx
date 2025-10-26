@@ -38,10 +38,7 @@ export default function DayEditor({
 
   return (
     <div className="space-y-5">
-      <div className="flex items-center justify-between font-semibold">
-        <h2>
-          Week {week}, Day {day}
-        </h2>
+      <div className="font-semibold">
         {completed ? (
           <div className="text-primary flex items-center gap-1">
             <BadgeCheck />

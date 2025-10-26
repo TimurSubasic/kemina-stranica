@@ -50,6 +50,8 @@ export default async function AdminDashboard() {
     return <div>Error getting incomplete days</div>;
   }
 
+  const totalDays = daysComp.length + daysInc.length;
+
   const progress = (daysComp.length / daysInc.length) * 100;
 
   return (
@@ -88,7 +90,7 @@ export default async function AdminDashboard() {
           <div className="flex gap-2 justify-center">
             <p className="font-bold">Total Days:</p>
 
-            <p>{daysComp.length + daysInc.length}</p>
+            <p>{totalDays}</p>
           </div>
 
           <div className="flex items-center justify-between">
@@ -105,14 +107,20 @@ export default async function AdminDashboard() {
             </div>
           </div>
           {/* Progress bar */}
-          <div className="w-full h-9 border dark:border-input rounded-md overflow-hidden bg-secondary ">
-            <div
-              className="h-full bg-primary transition-all  duration-300"
-              style={{
-                width: `${progress}%`,
-              }}
-            />
-          </div>
+          {totalDays > 0 ? (
+            <div className="w-full h-9 border dark:border-input rounded-md overflow-hidden bg-secondary ">
+              <div
+                className="h-full bg-primary transition-all  duration-300"
+                style={{
+                  width: `${progress}%`,
+                }}
+              />
+            </div>
+          ) : (
+            <div className="w-full flex items-center justify-center text-base font-medium">
+              There are 0 days
+            </div>
+          )}
         </div>
       </div>
     </div>

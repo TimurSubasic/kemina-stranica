@@ -14,6 +14,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { InputGroup, InputGroupAddon, InputGroupInput } from "./ui/input-group";
+import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 
 export function SignUpForm({
@@ -27,6 +29,8 @@ export function SignUpForm({
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+
+  const [hidden, setHidden] = useState(true);
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -99,13 +103,26 @@ export function SignUpForm({
                 <div className="flex items-center">
                   <Label htmlFor="password">Password</Label>
                 </div>
-                <Input
-                  id="password"
-                  type="password"
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
+                <InputGroup>
+                  <InputGroupInput
+                    minLength={6}
+                    id="password"
+                    type={hidden ? "password" : "text"}
+                    required
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                  <InputGroupAddon align="inline-end">
+                    <Button
+                      size="sm"
+                      type="button"
+                      onClick={() => setHidden(!hidden)}
+                      variant="ghost"
+                    >
+                      {hidden ? <EyeOff /> : <Eye />}
+                    </Button>
+                  </InputGroupAddon>
+                </InputGroup>
               </div>
               <div className="grid gap-2">
                 <div className="flex items-center">
@@ -113,7 +130,7 @@ export function SignUpForm({
                 </div>
                 <Input
                   id="repeat-password"
-                  type="password"
+                  type={hidden ? "password" : "text"}
                   required
                   value={repeatPassword}
                   onChange={(e) => setRepeatPassword(e.target.value)}
