@@ -9,14 +9,10 @@ import { changeCompleted } from "./actions";
 import { toast } from "sonner";
 
 export default function SingleDay({
-  day,
-  week,
   exercises,
   completed,
 }: {
   programId: string;
-  day: number;
-  week: number;
   exercises: ProgramExerciseProps[];
   completed: CompletedProps;
 }) {

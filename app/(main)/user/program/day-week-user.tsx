@@ -151,8 +151,6 @@ export default function DayWeekUser({
 
       <SingleDay
         programId={program.id}
-        week={week}
-        day={day}
         exercises={filteredExercises}
         completed={dayCompleted}
       />
