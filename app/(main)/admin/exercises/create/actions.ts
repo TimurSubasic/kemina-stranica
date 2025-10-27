@@ -8,21 +8,9 @@ export async function createExercise(formData: FormData) {
 
   const name = formData.get("name") as string;
   const description = formData.get("description") as string;
-  const video = formData.get("video") as File | null;
+  const video_url = formData.get("video_url") as string;
 
-  if (!name || !description || !video) return { error: "Missing fields" };
-
-  const { data: uploadData, error: uploadError } = await supabase.storage
-    .from("videos")
-    .upload(`public/${name}`, video);
-
-  if (uploadError) {
-    return { error: uploadError.message };
-  }
-
-  const video_url = `${
-    supabase.storage.from("videos").getPublicUrl(uploadData.path).data.publicUrl
-  }`;
+  if (!name || !description || !video_url) return { error: "Missing fields" };
 
   const { error: insertError } = await supabase.from("exercises").insert({
     name,
@@ -36,4 +24,14 @@ export async function createExercise(formData: FormData) {
 
   revalidatePath("/admin/exercises");
   return { success: true };
+}
+
+export async function isVideoUrl(url: string) {
+  try {
+    const res = await fetch(url, { method: "HEAD" });
+    const type = res.headers.get("content-type");
+    return type ? type.startsWith("video/") : false;
+  } catch {
+    return false;
+  }
 }

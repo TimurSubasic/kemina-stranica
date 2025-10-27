@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import {
@@ -10,8 +10,14 @@ import {
   InputGroupTextarea,
 } from "@/components/ui/input-group";
 
-import { ArrowBigLeftDash, FolderPen, Info, Video } from "lucide-react";
-import { createExercise } from "./actions";
+import {
+  ArrowBigLeftDash,
+  Clipboard,
+  FolderPen,
+  Info,
+  Video,
+} from "lucide-react";
+import { createExercise, isVideoUrl } from "./actions";
 import { toast } from "sonner";
 import { Label } from "@/components/ui/label";
 
@@ -28,10 +34,17 @@ export default function CreateExercise() {
 
     const formData = new FormData(form);
 
-    const fileInput = formData.get("video") as File | null;
-    if (fileInput && fileInput.size > 50 * 1024 * 1024) {
-      setError("File size should be less than 50MB");
+    toast.loading("Checking video URL...");
+
+    const url = formData.get("video_url") as string;
+
+    const isVideo = await isVideoUrl(url);
+
+    toast.dismiss();
+
+    if (!isVideo) {
       setIsLoading(false);
+      setError("Invalid Video URL");
       return;
     }
 
@@ -51,6 +64,19 @@ export default function CreateExercise() {
     setIsLoading(false);
   };
 
+  const pasteRef = useRef<HTMLInputElement>(null);
+
+  const handlePaste = async () => {
+    try {
+      const text = await navigator.clipboard.readText();
+      if (pasteRef.current) {
+        pasteRef.current.value = text;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="p-5 w-full">
       <a href="/admin/exercises">
@@ -60,7 +86,10 @@ export default function CreateExercise() {
         </Button>
       </a>
 
-      <form className="grid gap-4  max-w-3xl mx-auto" onSubmit={handleCreate}>
+      <form
+        className="grid gap-4  max-w-3xl mx-auto my-5"
+        onSubmit={handleCreate}
+      >
         <Label>Exercise Name</Label>
         <InputGroup>
           <InputGroupInput name="name" placeholder="Name" required />
@@ -72,14 +101,30 @@ export default function CreateExercise() {
         <div className="flex items-center justify-between">
           <Label>Exercise Video</Label>
           <Label className="text-muted-foreground text-sm font-semibold">
-            Max 50MB
+            Paste URL
           </Label>
         </div>
 
         <InputGroup>
-          <InputGroupInput type="file" name="video" accept="video/*" required />
-          <InputGroupAddon>
+          <InputGroupInput
+            ref={pasteRef}
+            name="video_url"
+            type="url"
+            placeholder="Paste Video URL"
+            required
+          />
+          <InputGroupAddon align="inline-start">
             <Video />
+          </InputGroupAddon>
+          <InputGroupAddon align="inline-end">
+            <Button
+              type="button"
+              onClick={handlePaste}
+              variant="ghost"
+              size="sm"
+            >
+              <Clipboard />
+            </Button>
           </InputGroupAddon>
         </InputGroup>
 
@@ -98,11 +143,7 @@ export default function CreateExercise() {
 
         {error && <p className="text-red-500">{error}</p>}
 
-        <Button
-          size="lg"
-          type="submit"
-          disabled={true /*isLoading || can't push files via vercel*/}
-        >
+        <Button size="lg" type="submit" disabled={isLoading}>
           {isLoading ? <Spinner className="size-4" /> : "Create"}
         </Button>
       </form>
