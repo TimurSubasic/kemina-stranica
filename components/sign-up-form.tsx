@@ -91,7 +91,13 @@ export function SignUpForm({
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
         <CardHeader>
-          <CardTitle className="text-2xl">Sign up</CardTitle>
+          <div className="flex justify-between my-3">
+            <CardTitle className="text-2xl">Sign Up</CardTitle>
+
+            <Button onClick={() => router.replace("/")} variant="outline">
+              Home
+            </Button>
+          </div>
           <CardDescription>Create a new account</CardDescription>
         </CardHeader>
         <CardContent>

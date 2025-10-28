@@ -97,7 +97,7 @@ export default function SettingsForm({
     setEmailError("Still not in function");
   };
   return (
-    <div className="max-w-md mx-auto w-full mt-10 mb-5 ">
+    <div className="max-w-md mx-auto w-full mt-10 mb-5 p-5">
       <FieldSet>
         <FieldLegend className="mb-5 w-full text-center">
           User Settings

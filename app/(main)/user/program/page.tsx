@@ -12,6 +12,21 @@ export default async function ProgramPage() {
     return redirect("/auth/login");
   }
 
+  const { data: role, error: roleError } = await supabase
+    .from("users")
+    .select("role")
+    .eq("id", claims.claims.sub)
+    .single();
+
+  if (!role || roleError || role.role === "inactive") {
+    console.log(roleError);
+    return (
+      <div className="mt-10 font-semibold text-xl text-center">
+        No program found
+      </div>
+    );
+  }
+
   const { data: program, error: programError } = await supabase
     .from("user-programs")
     .select()

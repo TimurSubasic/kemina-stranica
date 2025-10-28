@@ -16,11 +16,14 @@ import Link from "next/link";
 import { useState } from "react";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "./ui/input-group";
 import { Eye, EyeOff } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"div">) {
+  const router = useRouter();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -53,7 +56,13 @@ export function LoginForm({
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
         <CardHeader>
-          <CardTitle className="text-2xl">Login</CardTitle>
+          <div className="flex justify-between my-3">
+            <CardTitle className="text-2xl">Login</CardTitle>
+
+            <Button onClick={() => router.replace("/")} variant="outline">
+              Home
+            </Button>
+          </div>
           <CardDescription>
             Enter your email below to login to your account
           </CardDescription>
