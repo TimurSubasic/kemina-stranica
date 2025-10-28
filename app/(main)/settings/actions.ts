@@ -24,6 +24,8 @@ export async function deleteAccount() {
     };
   }
 
+  await supabase.auth.signOut();
+
   return {
     success: true,
     message: "Account deleted",
