@@ -63,3 +63,22 @@ export async function changeName(name: string) {
     message: "Name changed",
   };
 }
+
+export async function changeEmail(email: string) {
+  const supabase = await createClient();
+
+  const { error } = await supabase.auth.updateUser({ email });
+
+  if (error) {
+    console.error(error);
+    return {
+      success: false,
+      message: "Failed to update email",
+    };
+  }
+
+  return {
+    success: true,
+    message: "Check your email address to confirm change",
+  };
+}

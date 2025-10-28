@@ -23,7 +23,7 @@ import {
   InputGroupButton,
   InputGroupInput,
 } from "@/components/ui/input-group";
-import { changeName, deleteAccount } from "./actions";
+import { changeEmail, changeName, deleteAccount } from "./actions";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
@@ -91,10 +91,31 @@ export default function SettingsForm({
     setName("");
   };
 
-  const handleEmailSave = async () => {
-    console.log(email);
+  function isEmail(str: string) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(str);
+  }
 
-    setEmailError("Still not in function");
+  const handleEmailSave = async () => {
+    if (!isEmail(email)) {
+      setEmailError("Email not valid");
+      return;
+    }
+
+    setEmailError("");
+
+    toast.loading("Changing email...");
+
+    const res = await changeEmail(email);
+
+    toast.dismiss();
+
+    if (res.success) {
+      toast.success(res.message);
+      router.refresh();
+    } else {
+      toast.error(res.message);
+    }
+    setEmail("");
   };
   return (
     <div className="max-w-md mx-auto w-full mt-10 mb-5 p-5">
@@ -109,6 +130,7 @@ export default function SettingsForm({
             <InputGroup>
               <InputGroupInput
                 onChange={(e) => setName(e.target.value)}
+                value={name}
                 id="name"
                 name="name"
                 placeholder={user.name}
@@ -128,8 +150,9 @@ export default function SettingsForm({
             <InputGroup>
               <InputGroupInput
                 onChange={(e) => setEmail(e.target.value)}
-                id="name"
-                name="name"
+                value={email}
+                id="email"
+                name="email"
                 type="email"
                 placeholder={user.email}
               />
