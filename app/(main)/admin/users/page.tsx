@@ -1,6 +1,6 @@
-import UserItem from "@/components/user-item";
 import { createClient } from "@/lib/supabase/server";
 import React from "react";
+import UserItem from "./user-item";
 
 export default async function UserManagement() {
   const supabase = createClient();

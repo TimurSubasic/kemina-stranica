@@ -1,14 +1,6 @@
 "use client";
 import React from "react";
-import {
-  Dumbbell,
-  Home,
-  Users,
-  SquarePen,
-  Cog,
-  LayoutDashboard,
-  Trash2,
-} from "lucide-react";
+import { Dumbbell, Home, Users, Cog, LayoutDashboard } from "lucide-react";
 
 import {
   SidebarMenu,
@@ -37,19 +29,9 @@ const adminItems = [
     icon: Users,
   },
   {
-    title: "Exercises",
+    title: "Exercise Management",
     url: "/admin/exercises",
     icon: Dumbbell,
-  },
-  {
-    title: "Create Exercise",
-    url: "/admin/exercises/create",
-    icon: SquarePen,
-  },
-  {
-    title: "Delete Exercise",
-    url: "/admin/exercises/delete",
-    icon: Trash2,
   },
   {
     title: "Settings",
